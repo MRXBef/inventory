@@ -1,0 +1,272 @@
+body{
+  background-color: rgb(255, 255, 255);
+}
+.my-sidebar {
+  width: 300px;
+  height: 100vh;
+  background-color: black;
+  padding: 5px;
+  padding-right: 20px;
+  margin-right: 10px;
+  padding-top: 20px;
+}
+
+.my-dashboard{
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 1580px;
+  height: auto;
+  /* background-color: yellow; */
+  padding: 10px;
+  gap: 10px;
+}
+
+.my-dashboardChild{
+  width: 100%;
+  height: 298px;
+  /* background-color: blue; */
+  display: flex;
+  gap: 20px;
+}
+
+.my-headMenu{
+  display: flex;
+  width: 50%;
+  height: 250px;
+  /* border: 1px solid grey; */
+  border-radius: 0%;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.my-menu {
+  width: 2500px;
+  height: 150px;
+  background-color: black;
+  padding: 30px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.my-menu h3 {
+  font-weight: bold;
+  color: white;
+}
+
+.my-menu h1{
+  font-size: 45px;
+  font-weight: bold;
+  margin-left: -3px;
+  color: lightgreen;
+}
+
+
+
+/* cashier */
+.myCashierContainer {
+  width: 1580px;
+  height: 90vh;
+  margin-top: 10px;
+}
+
+.judul {
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+}
+
+.judul h1{
+  font-size: 70px;
+  font-weight: bold;
+  color: black;
+  border-left: 10px solid darkorange;
+  padding-left: 10px;
+  margin-left: 30px;
+}
+
+.formContainer {
+  width: 100%;
+  height: auto;
+  padding-right: 600px;
+}
+
+.orderView{
+  width: 1000px;
+  height: 400px;
+  overflow: scroll;
+  margin-top: 20px;
+  border-top: 3px solid lightgray;
+}
+
+
+/* inventory */
+.inventoryContainer {
+  width: 1580px;
+  height: 90vh;
+  margin-top: 10px;
+}
+
+.inventoryMenu {
+  width: 100%;
+  height: 50px;
+}
+
+.inventoryMenu ul {
+  display: flex;
+  width: auto;
+  height: 50px;
+  align-items: center;
+  margin-left: 10px;
+  gap: 30px;
+}
+
+.inventoryMenu ul li button{
+  width: 150px;
+  font-weight: bold;
+  color: darkorange;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  border: 2px solid darkorange;
+}
+
+.inventoryContainer ul li:nth-child(6) {
+  margin-left: auto;
+  margin-right: 20px;
+  order: 2;
+}
+
+.inventoryContainer ul li:nth-child(6) button{
+  background-color: black;
+  border-color: black;
+  color: white;
+}
+
+.inventoryContainer ul li:nth-child(6) button:hover{
+  background-color: black;
+  border-color: transparent;
+  color: white;
+}
+
+.inventoryMenu ul li button:hover{
+  background-color: black;
+  color: darkorange;
+}
+
+.tableContainer {
+  margin-top: 10px;
+  width: 100%;
+  height: 600px;
+  border-top: 3px solid lightgray;
+  border-left: 3px solid lightgray;
+  overflow: scroll;
+}
+
+.tableContainer table thead{
+  z-index: 9998;
+  background-color: black;
+  position: sticky;
+  top: 0;
+}
+
+.tableContainer table tbody tr:hover {
+  background-color: black;
+}
+
+.is-active-btn {
+  background-color: hsl( 221 , 14% , 9% );
+  
+}
+
+.formAddProduct {
+  width: 100%;
+  height: 100vh;
+  background-color:rgba(0,0,0,0.9);
+  position: fixed;
+  z-index: 9999;
+  padding: 20px;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hideFormAddProduct {
+  top: -100%;
+}
+
+.formAddProduct form{
+  background-color: hsl( 221 , 14% , 9% );
+  width: 650px;
+  height: 650px;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.formAddStock {
+  width: 100%;
+  height: 100vh;
+  background-color:rgba(0,0,0,0.9);
+  position: fixed;
+  z-index: 9999;
+  padding: 20px;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hideFormAddStock {
+  top: -100%;
+}
+
+.formAddStock form{
+  background-color: hsl( 221 , 14% , 9% );
+  width: 400px;
+  height: 250px;
+  padding: 30px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.stockNameInfo {
+  position: absolute;
+  margin-top: -180px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* chart */
+.chartContainer {
+  width: 700px;
+  height: 280px;
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+  margin-left: 20px;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.chartView {
+  transform: scale(1.5);
+}

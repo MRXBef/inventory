@@ -1,0 +1,100 @@
+POST http://localhost:5000/items
+Content-Type: application/json
+
+{
+    "name": "buah naga",
+    "category": "foods",
+    "price": "10000",
+    "stock": "10",
+    "discount": ""
+}
+
+###
+PUT http://localhost:5000/items/FOO6023
+Content-Type: application/json
+
+{
+    "name": "",
+    "price": "",
+    "stock": "80",
+    "discount": ""
+}
+
+###
+PUT http://localhost:5000/items/stock/FOO6023
+Content-Type: application/json
+
+{
+    "stockAdded": "20"
+}
+
+###
+DELETE  http://localhost:5000/items/DRI2348
+
+###
+
+GET http://localhost:5000/items
+
+###
+
+GET http://localhost:5000/items/foods
+
+###
+
+GET http://localhost:5000/items/drinks
+
+###
+
+GET http://localhost:5000/items/bathroom
+
+###
+
+GET http://localhost:5000/items/kitchen
+
+###
+
+GET http://localhost:5000/record
+
+###
+
+GET http://localhost:5000/record/turncode/2952024121459
+
+###
+
+POST http://localhost:5000/record
+Content-Type: application/json
+
+{
+    "turnCode" : "2962024124928",
+    "itemCode" : "DRI5275",
+    "quantity" : "2"
+}
+###
+
+POST http://localhost:5000/orders
+Content-Type: application/json
+
+{
+    "turnCode" : "2952024143554",
+    "cash": "100000"
+}
+
+###
+
+GET http://localhost:5000/dashboard/stock
+###
+
+GET http://localhost:5000/dashboard/items
+###
+
+GET http://localhost:5000/dashboard/todayOrders
+###
+
+GET http://localhost:5000/dashboard/todayIncome
+
+###
+GET http://localhost:5000/dashboard/last6DaysIncome
+
+###
+
+GET http://localhost:5000/items/bestseller
