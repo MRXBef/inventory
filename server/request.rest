@@ -98,3 +98,12 @@ GET http://localhost:5000/dashboard/last6DaysIncome
 ###
 
 GET http://localhost:5000/items/bestseller
+
+###
+
+POST http://localhost:5000/items/search
+Content-Type: application/json
+
+{
+    "value" : "milkuat"
+}

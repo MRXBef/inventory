@@ -270,3 +270,11 @@ body{
 .chartView {
   transform: scale(1.5);
 }
+
+.searchItem {
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  padding: 0px 10px 0px 10px;
+  outline: none;
+}

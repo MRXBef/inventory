@@ -1,5 +1,5 @@
 import express from "express";
-import { addItem, getAllItem, getFoods, getDrinks, getBathroom, getKitchen, updateItem, deleteItem, addStock } from "../controllers/Items.js";
+import { addItem, getAllItem, getFoods, getDrinks, getBathroom, getKitchen, updateItem, deleteItem, addStock, searchItem } from "../controllers/Items.js";
 import {getTurnCode, getRecordsByTurnCode, createRecordOrder, createFinalOrder} from "../controllers/orders.js"
 import {getTotalOfItemsStock, getTotalOFItemsProduct, getTodayOrders, getTodayIncomes, getLast6DaysIncomes, getBestSeller} from "../controllers/dashboard.js"
 
@@ -18,6 +18,8 @@ router.get('/items/foods', getFoods)
 router.get('/items/drinks', getDrinks)
 router.get('/items/bathroom', getBathroom)
 router.get('/items/kitchen', getKitchen)
+
+router.post('/items/search', searchItem)
 
 router.get('/record/code', getTurnCode)
 router.get('/record/turncode/:turnCode', getRecordsByTurnCode)

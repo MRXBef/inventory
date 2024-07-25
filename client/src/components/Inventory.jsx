@@ -21,6 +21,7 @@ const Inventory = () => {
   const [codeAddStock, setCodeAddStock] = useState('')
   const [nameAddStock, setNameAddStock] = useState('')
   const [stockAddStock, setStockAddStock] = useState('')
+  const [search, setSearch] = useState('')
 
   const [totalAddStock, setTotalAddStock] = useState('')
 
@@ -139,6 +140,20 @@ const Inventory = () => {
     e.stopPropagation();
   };
 
+  const handleSearch = async(e) => {
+    e.preventDefault()
+
+    try {
+      const response = await axios.post('http://localhost:5000/items/search', {
+        value: search
+      })
+      setItems(response.data.data)
+      setActiveButton('')
+    } catch (error) {
+      console.log(error.response.data.msg)
+    }
+  }
+
   const tableStyle = {
     width: '100%'
   }
@@ -169,6 +184,11 @@ const Inventory = () => {
                   </li>
                   <li>
                     <button onClick={handleShowFormAddProduct}>Add Product</button>
+                  </li>
+                  <li>
+                    <form onSubmit={handleSearch}>
+                      <input placeholder='Cari' type="text" className="searchItem" onChange={(e) => setSearch(e.target.value)} />
+                    </form>
                   </li>
                 </ul>
             </div>

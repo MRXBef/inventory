@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import Items from '../model/ItemsModel.js'
 
 export const addItem = async(req, res) => {
@@ -196,6 +197,27 @@ export const addStock = async(req, res) => {
             data: item.stock
         })
     } catch (error) {
-        
+        console.log(error)
+        res.status(500).json({error: error})
+    }
+}
+
+export const searchItem = async(req, res) => {
+    const {value} = req.body
+    if(!value) return res.status(400).json({msg: "Must insert a value"})
+    try {
+        const item = await Items.findAll({
+            attributes: ['code', 'name', 'category', 'stock', 'discount', 'price'],
+            where: {
+                name : {
+                    [Op.like] : `%${value}%`
+                }
+            }
+        })
+        if(item.length < 1) return res.status(403).json({msg: "Item not found"})
+        res.status(200).json({data: item})
+   } catch (error) {
+        console.log(error)
+        res.status(500).json({error: error.message})
     }
 }

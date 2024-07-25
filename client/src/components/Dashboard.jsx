@@ -233,7 +233,7 @@ const Dashboard = () => {
           <div className="my-headMenu">
             <div className="my-menu">
               <h3>Best Seller Last 1 Weeks</h3>
-              <h1>{bestSeller}</h1>
+              <h1>{bestSeller || "-"}</h1>
             </div>
           </div>
         </div>
