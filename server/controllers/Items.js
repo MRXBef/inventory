@@ -5,7 +5,7 @@ export const addItem = async(req, res) => {
     //list category [foods = FOO****, drinks = DRI****, bathroom = BAT****, kitchen = KIT****]
     const {name, category, price, stock, discount} = req.body
 
-    if(!name || !price) return res.status(400).json({msg: "name or price field is require!"})
+    if(!name || !price || !stock) return res.status(400).json({msg: "name, price or stock field are required!"})
 
     if(discount > 100) return res.status(400).json({msg: "Discount most in range 0 - 100 %"})
     const convDiscount = parseFloat(discount) / 100
@@ -198,7 +198,7 @@ export const addStock = async(req, res) => {
         })
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: error})
+        res.status(500).json({error: error.message})
     }
 }
 
@@ -209,8 +209,13 @@ export const searchItem = async(req, res) => {
         const item = await Items.findAll({
             attributes: ['code', 'name', 'category', 'stock', 'discount', 'price'],
             where: {
-                name : {
-                    [Op.like] : `%${value}%`
+                [Op.or] : {
+                    name : {
+                        [Op.like] : `%${value}%`
+                    },
+                    code : {
+                        [Op.like] : `%${value}%`
+                    }
                 }
             }
         })

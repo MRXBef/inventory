@@ -22,6 +22,7 @@ const Inventory = () => {
   const [nameAddStock, setNameAddStock] = useState('')
   const [stockAddStock, setStockAddStock] = useState('')
   const [search, setSearch] = useState('')
+  const [msgAddProduct, setMsgAddProduct] = useState('')
 
   const [totalAddStock, setTotalAddStock] = useState('')
 
@@ -47,7 +48,7 @@ const Inventory = () => {
         navigate(0)
       } 
     } catch (error) {
-      console.log(error)
+      setMsgAddProduct(error.response.data.msg)
     }
   }
 
@@ -151,6 +152,7 @@ const Inventory = () => {
       setActiveButton('')
     } catch (error) {
       console.log(error.response.data.msg)
+      setItems([])
     }
   }
 
@@ -274,6 +276,7 @@ const Inventory = () => {
                   <p className="help">Tambahkan diskon (jika perlu)</p>
                 </div>
                 <button className='button is-success is-fullwidth'>Add</button>
+              <p>{msgAddProduct}</p>
               </form>
             </div>
 
