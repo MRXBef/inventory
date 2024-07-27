@@ -20,7 +20,7 @@ export const getRecordsByTurnCode = async(req, res) => {
 
     try {
         const records = await OrderRecordModel.findAll({
-            attributes: ['itemCode', 'itemName', 'quantity', 'finalPrice'],
+            attributes: ['itemCode', 'itemName', 'price', 'quantity', 'discount', 'finalPrice'],
             where: {
                 turnCode: turnCode
             }
@@ -56,7 +56,9 @@ export const createRecordOrder = async(req, res) => {
             turnCode: turnCode.toUpperCase(),
             itemName: itemName,
             itemCode: itemCode,
+            price: price,
             quantity: quantity,
+            discount: discount,
             finalPrice: finalPrice
         })
         res.status(200).json({msg: "Order record created"})

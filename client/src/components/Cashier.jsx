@@ -15,6 +15,7 @@ const Cashier = () => {
     const [discount, setDiscount] = useState('_____________')
     const [productList, setProductList] = useState([]) // State untuk daftar produk hasil pencarian
     const [showDropdown, setShowDropdown] = useState(false) // State untuk menampilkan dropdown
+    const [isStoreClicked, setIsStoreClicked] = useState(false) // State untuk tombol Store
 
     useEffect(() => {
         getTurnCode()
@@ -60,6 +61,7 @@ const Cashier = () => {
             if(response){
                 setRecordMsg('')
                 setProductCode('')
+                setQuantity('')
             }
         } catch (error) {
             if(error.response) {
@@ -100,9 +102,14 @@ const Cashier = () => {
             const discount = response.data.data.sumDiscount
             setReturns(rupiah(cashReturn))
             setDiscount(rupiah(discount))
+            setIsStoreClicked(true) // Mengubah state tombol
         } catch (error) {
             console.log(error.response)
         }
+    }
+
+    const handleRefresh = () => {
+        window.location.reload() // Merefresh halaman
     }
 
     const searchProducts = async(query) => {
@@ -113,7 +120,7 @@ const Cashier = () => {
             setProductList(response.data.data)
             setShowDropdown(true)
         } catch (error) {
-            console.log(error)
+            console.log(error.response)
             setProductList([])
             setShowDropdown(false)
         }
@@ -149,7 +156,7 @@ const Cashier = () => {
         width: '100%'
     }
     const nameTableStyle = {
-        width: '600px',
+        width: '400px',
         overflow: 'hidden'
     }
     const totalBayar = {
@@ -181,6 +188,8 @@ const Cashier = () => {
         overflow: 'scroll',
         padding: '10px 0px 10px 0px'
     }
+
+    console.log(records)
 
     return (
         <div className='is-flex'>
@@ -219,9 +228,10 @@ const Cashier = () => {
                             <tr>
                                 <th><abbr title="Position">No</abbr></th>
                                 <th>Code</th>
-                                <th>Product Name</th>
+                                <th style={{width: '400px'}}>Product Name</th>
+                                <th>Unit Price</th> 
                                 <th>Quantity</th> 
-                                <th>Price</th> 
+                                <th>Sub Total</th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -231,8 +241,9 @@ const Cashier = () => {
                                         <th>{index + 1}</th>
                                         <td>{record.itemCode}</td>
                                         <td style={nameTableStyle}>{record.itemName.toUpperCase()}</td>
+                                        <td>{rupiah(record.price)}</td>
                                         <td>x {record.quantity}</td>
-                                        <td>{rupiah(record.finalPrice)}</td>
+                                        <td>{rupiah(record.finalPrice)} <span style={{color: 'red'}}>{record.discount > 0 ? `(-${record.discount * 100}%)` : ''}</span></td>
                                     </tr>
                                 ))
                             }
@@ -244,8 +255,13 @@ const Cashier = () => {
                     <form onSubmit={storeOrders} className='is-flex codeForm mt-5'>
                             <input style={quantityStyle} type="hidden" value={recordCode} className='input'/>
                             <input style={quantityStyle} type="number" className='input' placeholder='Cash' value={cash} onChange={(e) => setCash(e.target.value)}/>
-                            <button style={addButtonStyle} className='button is-success'>Store</button>
+                            <button style={addButtonStyle} className='button is-success' disabled={isStoreClicked}>
+                                Store
+                            </button>
                     </form>
+                    {isStoreClicked && (
+                        <button onClick={handleRefresh} className='button is-danger' style={{...addButtonStyle, marginTop: '10px', backgroundColor: 'green', width: '100px', height: '100px', position: 'absolute', marginLeft: ''}}>Refresh</button>
+                    )}
                     <div style={returnAndDiscountStyle} className='is-flex mt-5'>
                         <h1 style={totalKembalian}>Return {returns}</h1>
                         <h1 className='ml-5' style={totalKembalian}>Discount {discount}</h1>
