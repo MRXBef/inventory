@@ -45,7 +45,8 @@ export const createRecordOrder = async(req, res) => {
             }
         })
         if(!item) return res.status(400).json({msg: "Item not found"})
-        if(item.dataValues.stock < 0) return res.status(400).json({msg: "Out of stock"})
+        console.log(item.dataValues.stock)
+        if(item.dataValues.stock == 0) return res.status(400).json({msg: "Out of stock"})
 
         const itemName = item.dataValues.name
         const price = item.dataValues.price

@@ -200,7 +200,7 @@ const Cashier = () => {
                     <h1>Cashier</h1>
                 </div>
                 <div className="formContainer">
-                    <h1 className='mb-1'>{recordMsg}</h1>
+                    <h1 className='mb-1' style={{color: 'red', fontWeight: 'bold', position: 'absolute', marginLeft: '450px', marginTop: '7px', zIndex: '999'}}>{recordMsg}</h1>
                     <form onSubmit={record} className='is-flex codeForm'>
                         <input 
                             type="text" 
@@ -208,6 +208,7 @@ const Cashier = () => {
                             placeholder='Search with code or name of product' 
                             value={productCode} 
                             onChange={handleProductCodeChange}
+                            onClick={() => {setRecordMsg('')}}
                         />
                         <input style={quantityStyle} type="number" className='input' placeholder='Quantity' value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
                         <button style={addButtonStyle} className='button is-success'>+</button>
