@@ -159,6 +159,7 @@ const Inventory = () => {
   const tableStyle = {
     width: '100%'
   }
+  
   return (
     <div className='is-flex'>
         <Sidebar/>
@@ -210,7 +211,7 @@ const Inventory = () => {
                     <tbody>
                       {
                         items.map((item, index) => (
-                          <tr key={index}>
+                          <tr key={index} className={item.stock <= 0 ? 'stockHabis' : ''}>
                             <td>{index + 1}</td>
                             <td>{item.code}</td>
                             <td>{item.name.toUpperCase()}</td>

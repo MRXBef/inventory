@@ -278,3 +278,11 @@ body{
   padding: 0px 10px 0px 10px;
   outline: none;
 }
+
+.stockHabis {
+  background-color: darkred;
+}
+
+.stockHabis:hover {
+  background-color: red;
+}
