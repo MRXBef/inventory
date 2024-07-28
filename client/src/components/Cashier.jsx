@@ -14,6 +14,7 @@ const Cashier = () => {
     const [returns, setReturns] = useState('_____________')
     const [discount, setDiscount] = useState('_____________')
     const [productList, setProductList] = useState([]) // State untuk daftar produk hasil pencarian
+    const [formattedCash, setFormattedCash] = useState('');
     const [showDropdown, setShowDropdown] = useState(false) // State untuk menampilkan dropdown
     const [isStoreClicked, setIsStoreClicked] = useState(false) // State untuk tombol Store
 
@@ -23,10 +24,7 @@ const Cashier = () => {
 
     useEffect(() => {
         if(recordCode) {
-            const interval = setInterval(() => {
-                getRecords()
-            }, 500)
-            return () => clearInterval(interval)
+            getRecords()
         }
     }, [recordCode])
 
@@ -36,13 +34,12 @@ const Cashier = () => {
           currency: 'IDR',
           minimumFractionDigits: 0,
           maximumFractionDigits: 0,
-        }).format(number);
+        }).format(number).replace('IDR', 'Rp').trim();
     };
 
     const getTurnCode = async() => {
         try {
             const response = await axios.get('http://localhost:5000/record/code')
-            console.log(response.data.turn_code)
             setRecordCode(response.data.turn_code)
         } catch (error) {
             console.log(error)
@@ -62,6 +59,7 @@ const Cashier = () => {
                 setRecordMsg('')
                 setProductCode('')
                 setQuantity('')
+                getRecords()
             }
         } catch (error) {
             if(error.response) {
@@ -141,6 +139,48 @@ const Cashier = () => {
         setShowDropdown(false)
     }
 
+    const handlePriceOnChange = async (e, id) => {
+        const formattedValue = e.target.value;
+        const rawValue = formattedValue.replace(/\D/g, '');
+        const newPrice = Number(rawValue);
+
+        try {
+            const response = await axios.post('http://localhost:5000/record/changePrice', {
+                itemId: id,
+                newPrice: newPrice
+            });
+            if (response) {
+                getRecords();
+            }
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
+
+    const handleFormattedPriceChange = (e, id) => {
+        const rawValue = e.target.value.replace(/\D/g, '');
+        const formattedValue = rupiah(rawValue);
+        setRecords((prevRecords) =>
+            prevRecords.map((record) =>
+                record.id === id ? { ...record, price: rawValue, formattedPrice: formattedValue } : record
+            )
+        );
+    };
+
+    const handleFormattedCashChange = (e) => {
+        const rawValue = e.target.value.replace(/\D/g, '');
+        const formattedValue = rupiah(rawValue);
+        setCash(rawValue);
+        setFormattedCash(formattedValue);
+    };
+
+    const handleCashOnChange = () => {
+        const newCash = Number(cash);
+        setCash(newCash);
+        setFormattedCash(rupiah(newCash));
+    };
+    
+
     const quantityStyle = {
         width: '200px',
         marginLeft: '2px'
@@ -189,8 +229,6 @@ const Cashier = () => {
         padding: '10px 0px 10px 0px'
     }
 
-    console.log(records)
-
     return (
         <div className='is-flex'>
             <Sidebar/>
@@ -227,7 +265,7 @@ const Cashier = () => {
                     <table style={tableStyle} className="table">
                         <thead>
                             <tr>
-                                <th><abbr title="Position">No</abbr></th>
+                                <th>No</th>
                                 <th>Code</th>
                                 <th style={{width: '400px'}}>Product Name</th>
                                 <th>Unit Price</th> 
@@ -242,7 +280,15 @@ const Cashier = () => {
                                         <th>{index + 1}</th>
                                         <td>{record.itemCode}</td>
                                         <td style={nameTableStyle}>{record.itemName.toUpperCase()}</td>
-                                        <td>{rupiah(record.price)}</td>
+                                        <td>
+                                            <input 
+                                                style={{padding: '5px', fontSize: '13px'}} 
+                                                type="text" 
+                                                value={record.formattedPrice || rupiah(record.price)} 
+                                                onChange={(e) => handleFormattedPriceChange(e, record.id)}
+                                                onBlur={(e) => handlePriceOnChange(e, record.id)}
+                                            />
+                                        </td>
                                         <td>x {record.quantity}</td>
                                         <td>{rupiah(record.finalPrice)} <span style={{color: 'red'}}>{record.discount > 0 ? `(-${record.discount * 100}%)` : ''}</span></td>
                                     </tr>
@@ -255,7 +301,15 @@ const Cashier = () => {
                     <h1 style={totalBayar}>Total: {total}</h1>
                     <form onSubmit={storeOrders} className='is-flex codeForm mt-5'>
                             <input style={quantityStyle} type="hidden" value={recordCode} className='input'/>
-                            <input style={quantityStyle} type="number" className='input' placeholder='Cash' value={cash} onChange={(e) => setCash(e.target.value)}/>
+                            <input 
+                                style={quantityStyle} 
+                                type="text" 
+                                className='input' 
+                                placeholder='Cash' 
+                                value={formattedCash || cash} 
+                                onChange={handleFormattedCashChange} 
+                                onBlur={handleCashOnChange} 
+                            />
                             <button style={addButtonStyle} className='button is-success' disabled={isStoreClicked}>
                                 Store
                             </button>

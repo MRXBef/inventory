@@ -2,6 +2,7 @@ import Orders from '../model/ordersModel.js'
 import OrderRecordModel from '../model/orderRecordModel.js'
 import Items from '../model/ItemsModel.js'
 import {Op} from 'sequelize'
+import orderRecords from '../model/orderRecordModel.js'
 
 export const getTurnCode = async(req, res) => {
     const date = new Date()
@@ -20,7 +21,7 @@ export const getRecordsByTurnCode = async(req, res) => {
 
     try {
         const records = await OrderRecordModel.findAll({
-            attributes: ['itemCode', 'itemName', 'price', 'quantity', 'discount', 'finalPrice'],
+            attributes: ['id', 'itemCode', 'itemName', 'price', 'quantity', 'discount', 'finalPrice'],
             where: {
                 turnCode: turnCode
             }
@@ -29,6 +30,32 @@ export const getRecordsByTurnCode = async(req, res) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({msg: "Internal server error"})  
+    }
+}
+
+export const changePriceForSelectedItem = async(req, res) => {
+    const {itemId, newPrice} = req.body
+    if(!itemId || !newPrice) return res.status(400).json({ msg: "Item ID and new price are required"})
+
+    try {
+        const itemRecord = await orderRecords.findOne({
+            where: {id: itemId}
+        })
+        if(!itemRecord) return res.status(403).json({msg: "Item not found!"})
+
+        itemRecord.price = newPrice
+        if(itemRecord.discount > 0) {
+            const discountAmount = newPrice * itemRecord.discount;
+            itemRecord.finalPrice = (newPrice - discountAmount) * itemRecord.quantity;
+        }else{
+            itemRecord.finalPrice = itemRecord.quantity * newPrice
+        }
+        await itemRecord.save()
+
+        return res.status(200).json({msg: "Price Record Updated Successfully!"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({msg: "Internal server error"})          
     }
 }
 
@@ -80,6 +107,7 @@ try {
             turnCode: turnCode
         }
     })
+    if(recordsOrdered.length <= 0) return res.status(400).json({msg: "Belum ada barang yang di scan!"})
 
     //membuat gabungan item dan membuat total diskon (start)
     let items = []

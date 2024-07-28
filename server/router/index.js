@@ -1,6 +1,6 @@
 import express from "express";
 import { addItem, getAllItem, getFoods, getDrinks, getBathroom, getKitchen, updateItem, deleteItem, addStock, searchItem } from "../controllers/Items.js";
-import {getTurnCode, getRecordsByTurnCode, createRecordOrder, createFinalOrder} from "../controllers/orders.js"
+import {getTurnCode, getRecordsByTurnCode, createRecordOrder, createFinalOrder, changePriceForSelectedItem} from "../controllers/orders.js"
 import {getTotalOfItemsStock, getTotalOFItemsProduct, getTodayOrders, getTodayIncomes, getLast6DaysIncomes, getBestSeller} from "../controllers/dashboard.js"
 
 const router = express.Router()
@@ -24,6 +24,7 @@ router.post('/items/search', searchItem)
 router.get('/record/code', getTurnCode)
 router.get('/record/turncode/:turnCode', getRecordsByTurnCode)
 router.post('/record', createRecordOrder)
+router.post('/record/changePrice', changePriceForSelectedItem)
 router.post('/orders', createFinalOrder)
 
 router.get('/dashboard/stock', getTotalOfItemsStock)

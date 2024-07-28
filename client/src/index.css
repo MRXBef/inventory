@@ -286,3 +286,21 @@ body{
 .stockHabis:hover {
   background-color: red;
 }
+
+/* Mengubah warna placeholder */
+input::placeholder {
+  color: black; /* Ganti dengan warna yang diinginkan */
+  opacity: 1;  /* Agar warna sesuai dengan yang ditentukan */
+}
+
+/* Menghilangkan kontrol spinner pada input number untuk Chrome, Safari, Edge, dan Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Menghilangkan kontrol spinner pada input number untuk Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
