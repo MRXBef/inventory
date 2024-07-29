@@ -29,6 +29,7 @@ const Dashboard = () => {
   const [todayIncomes, setTodayIncomes] = useState('0');
   const [chartData, setChartData] = useState([])
   const [bestSeller, setBestSeller] = useState('')
+  const [todayBestSeler, setTodayBestSeller] = useState('')
 
   const getLast7Days = () => {
     const days = [];
@@ -58,6 +59,7 @@ const Dashboard = () => {
       getTodayIncomes();
       getLast6DaysIncomes()
       getBestSellerProduct()
+      getTodayBestSellerProduct()
     // }, 500);
     // return () => clearInterval(interval);
   }, []);
@@ -109,8 +111,17 @@ const Dashboard = () => {
 
   const getBestSellerProduct = async() => {
     try {
-      const response = await axios.get('http://localhost:5000/items/bestseller')
+      const response = await axios.get('http://localhost:5000/dashboard/bestseller')
       setBestSeller(response.data.item.toUpperCase())
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+
+  const getTodayBestSellerProduct = async() => {
+    try {
+      const response = await axios.get('http://localhost:5000/dashboard/todayBestSeller')
+      setTodayBestSeller(response.data.item.toUpperCase())
     } catch (error) {
       console.log(error.response)
     }
@@ -234,6 +245,12 @@ const Dashboard = () => {
             <div className="my-menu">
               <h3>Best Seller Last 1 Weeks</h3>
               <h1>{bestSeller || "-"}</h1>
+            </div>
+          </div>
+          <div className="my-headMenu">
+            <div className="my-menu">
+              <h3>Today Best Seller</h3>
+              <h1>{todayBestSeler || "-"}</h1>
             </div>
           </div>
         </div>

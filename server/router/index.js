@@ -1,7 +1,7 @@
 import express from "express";
 import { addItem, getAllItem, getFoods, getDrinks, getBathroom, getKitchen, updateItem, deleteItem, addStock, searchItem } from "../controllers/Items.js";
 import {getTurnCode, getRecordsByTurnCode, createRecordOrder, createFinalOrder, changePriceForSelectedItem, deleteRecordOrder} from "../controllers/orders.js"
-import {getTotalOfItemsStock, getTotalOFItemsProduct, getTodayOrders, getTodayIncomes, getLast6DaysIncomes, getBestSeller} from "../controllers/dashboard.js"
+import {getTotalOfItemsStock, getTotalOFItemsProduct, getTodayOrders, getTodayIncomes, getLast6DaysIncomes, getBestSeller, getTodayBestSeller} from "../controllers/dashboard.js"
 
 const router = express.Router()
 
@@ -11,7 +11,6 @@ router.delete('/items/:kode', deleteItem)
 router.get('/items', getAllItem)
 
 router.put('/items/stock/:kode', addStock)
-router.get('/items/bestseller', getBestSeller)
 
 //get item berdasarkan kategori
 router.get('/items/foods', getFoods)
@@ -33,6 +32,8 @@ router.get('/dashboard/items', getTotalOFItemsProduct)
 router.get('/dashboard/todayOrders', getTodayOrders)
 router.get('/dashboard/todayIncome', getTodayIncomes)
 router.get('/dashboard/last6DaysIncome', getLast6DaysIncomes)
+router.get('/dashboard/bestseller', getBestSeller)
+router.get('/dashboard/todayBestSeller', getTodayBestSeller)
 
 
 

@@ -79,7 +79,6 @@ export const getBestSeller = async(req, res) => {
         const NOW = new Date()
         const SEVEN_DAYS_AGO = new Date(new Date(NOW.setDate(NOW.getDate() - 7)))
 
-
         const bestSellers = await Orders.findAll({
             where: {
                 createdAt: {
@@ -114,6 +113,51 @@ export const getBestSeller = async(req, res) => {
             }
         })
         return res.status(200).json({item: itemMostOrderAllTime.name})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({msg: "Internal server error"})
+    }
+}
+
+export const getTodayBestSeller = async(req, res) => {
+    try {
+        const NOW = new Date()
+        const TODAY_START = new Date(NOW.setHours(0,0,0,0))
+
+        const bestSellers = await Orders.findAll({
+            where: {
+                createdAt: {
+                    [Op.gt] : TODAY_START
+                }
+            }
+        })
+        let items = [], bestSeller = []
+        bestSellers.forEach(element => {
+            bestSeller.push(element.dataValues.items.split(','))
+        });
+        bestSeller.forEach(el => {el.forEach(e => {
+            items.push(e)}
+            )})
+
+        let itemOrder = []
+        items.forEach(item => {
+            itemOrder.push(item.split(':')[0]);
+        })
+        // Menggunakan objek untuk menghitung frekuensi
+        const frequency = {};
+        itemOrder.forEach(item => {
+        frequency[item] = (frequency[item] || 0) + 1;
+        });
+
+        // Mendapatkan item yang paling sering muncul
+        const mostFrequentItem = Object.keys(frequency).reduce((a, b) => frequency[a] > frequency[b] ? a : b);
+        
+        const itemMostOrderToday = await Items.findOne({
+            where: {
+                code: mostFrequentItem
+            }
+        })
+        return res.status(200).json({item: itemMostOrderToday.name})
     } catch (error) {
         console.log(error)
         res.status(500).json({msg: "Internal server error"})

@@ -140,6 +140,8 @@ const Cashier = () => {
     }
 
     const handlePriceOnChange = async (e, id) => {
+        e.preventDefault()
+        
         const formattedValue = e.target.value;
         const rawValue = formattedValue.replace(/\D/g, '');
         const newPrice = Number(rawValue);
