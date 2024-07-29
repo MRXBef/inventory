@@ -221,9 +221,8 @@ const Cashier = () => {
         marginRight: '20px'
     }
     const returnAndDiscountStyle = {
-        position: 'relative',
-        marginTop: '-100px',
-        marginLeft: '650px'
+        position: 'absolute',
+        right: '0px'
     }
 
     const dropdownStyle = {
@@ -336,8 +335,8 @@ const Cashier = () => {
                         <button onClick={handleRefresh} className='button is-danger' style={{...addButtonStyle, marginTop: '10px', backgroundColor: 'green', width: '100px', height: '100px', position: 'absolute', marginLeft: ''}}>Refresh</button>
                     )}
                     <div style={returnAndDiscountStyle} className='is-flex mt-5'>
-                        <h1 style={totalKembalian}>Return {returns}</h1>
-                        <h1 className='ml-5' style={totalKembalian}>Discount {discount}</h1>
+                        <h1 style={totalKembalian}>Return <br />{returns}</h1>
+                        <h1 className='ml-5' style={totalKembalian}>Discount <br />{discount}</h1>
                     </div>
                 </div>
             </div>
