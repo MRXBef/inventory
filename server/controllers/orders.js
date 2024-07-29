@@ -72,8 +72,27 @@ export const createRecordOrder = async(req, res) => {
             }
         })
         if(!item) return res.status(400).json({msg: "Item not found"})
-        console.log(item.dataValues.stock)
         if(item.dataValues.stock == 0) return res.status(400).json({msg: "Out of stock"})
+
+        const checkItemIsRecorded = await orderRecords.findOne({
+            where: {
+                [Op.and] : {
+                    turnCode: turnCode,
+                    itemCode: itemCode
+                }
+            }
+        })
+        if(checkItemIsRecorded) {
+            const newQuantity = checkItemIsRecorded.quantity += Number(quantity)
+            if(checkItemIsRecorded.discount > 0){
+                const discountAmmount = checkItemIsRecorded.price * checkItemIsRecorded.discount
+                checkItemIsRecorded.finalPrice = (checkItemIsRecorded.price - discountAmmount) * newQuantity
+            }else{
+                checkItemIsRecorded.finalPrice = checkItemIsRecorded.price * newQuantity
+            }
+            await checkItemIsRecorded.save()
+            return res.status(208).json({msg: "Order record already created!"})
+        }
 
         const itemName = item.dataValues.name
         const price = item.dataValues.price
@@ -89,7 +108,8 @@ export const createRecordOrder = async(req, res) => {
             discount: discount,
             finalPrice: finalPrice
         })
-        res.status(200).json({msg: "Order record created"})
+
+        res.status(201).json({msg: "Order record created"})
     } catch (error) {
         console.log(error)
         res.status(500).json({msg: "Internal server error"})
