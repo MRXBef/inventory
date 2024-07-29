@@ -116,6 +116,26 @@ export const createRecordOrder = async(req, res) => {
     }
 }
 
+export const deleteRecordOrder = async(req, res) => {
+    const recordId = req.params['recordId']
+    if(!recordId) return res.status(400).json({msg: "Record id is reuired!"})
+
+    try {
+        const item = await orderRecords.findOne({
+            where: {
+                id: recordId
+            }
+        })
+        if(!item) return res.status(403).json({msg: "Order record not found"})
+        
+        await item.destroy()
+        res.status(200).json({msg: "Record successfully deleted"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({msg: "Internal server error"})
+    }
+}
+
 
 export const createFinalOrder = async(req, res) => {
     const {turnCode, cash} = req.body

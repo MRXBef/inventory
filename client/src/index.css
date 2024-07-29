@@ -67,7 +67,7 @@ body{
 
 /* cashier */
 .myCashierContainer {
-  width: 1580px;
+  width: 100%;
   height: 90vh;
   margin-top: 10px;
 }
@@ -95,7 +95,7 @@ body{
 }
 
 .orderView{
-  width: 1000px;
+  width: 100%;
   height: 400px;
   overflow: scroll;
   margin-top: 20px;

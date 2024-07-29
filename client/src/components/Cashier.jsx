@@ -180,6 +180,16 @@ const Cashier = () => {
         setFormattedCash(rupiah(newCash));
     };
     
+    const handleDeleteRecord = async(recordId) => {
+        try {
+            const response = await axios.delete(`http://localhost:5000/record/${recordId}`)
+            if(response) {
+                getRecords()
+            }
+        } catch (error) {
+            console.log(error.response)
+        }
+    }
 
     const quantityStyle = {
         width: '200px',
@@ -203,7 +213,6 @@ const Cashier = () => {
         fontSize: '40px',
         color: 'black',
         fontWeight: 'bold',
-        borderBottom: '3px solid lightgray',
     }
     const totalKembalian = {
         fontSize: '30px',
@@ -270,7 +279,8 @@ const Cashier = () => {
                                 <th style={{width: '400px'}}>Product Name</th>
                                 <th>Unit Price</th> 
                                 <th>Quantity</th> 
-                                <th>Sub Total</th> 
+                                <th>Sub Total</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -291,6 +301,14 @@ const Cashier = () => {
                                         </td>
                                         <td>x {record.quantity}</td>
                                         <td>{rupiah(record.finalPrice)} <span style={{color: 'red'}}>{record.discount > 0 ? `(-${record.discount * 100}%)` : ''}</span></td>
+                                        <td>
+                                            <button 
+                                            className='button' style={{height: '30px'}}
+                                            onClick={() => handleDeleteRecord(record.id)}
+                                            >
+                                                Hapus
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))
                             }
@@ -311,7 +329,7 @@ const Cashier = () => {
                                 onBlur={handleCashOnChange} 
                             />
                             <button style={addButtonStyle} className='button is-success' disabled={isStoreClicked}>
-                                Store
+                                Create Order
                             </button>
                     </form>
                     {isStoreClicked && (
