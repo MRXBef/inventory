@@ -1,7 +1,8 @@
-import express from "express";
+import express, { Router } from "express";
 import { addItem, getAllItem, getFoods, getDrinks, getBathroom, getKitchen, updateItem, deleteItem, addStock, searchItem } from "../controllers/Items.js";
 import {getTurnCode, getRecordsByTurnCode, createRecordOrder, createFinalOrder, changePriceForSelectedItem, deleteRecordOrder} from "../controllers/orders.js"
 import {getTotalOfItemsStock, getTotalOFItemsProduct, getTodayOrders, getTodayIncomes, getLast6DaysIncomes, getBestSeller, getTodayBestSeller} from "../controllers/dashboard.js"
+import { addOutlet, deleteOutlet } from "../controllers/outlet.js";
 
 const router = express.Router()
 
@@ -34,6 +35,9 @@ router.get('/dashboard/todayIncome', getTodayIncomes)
 router.get('/dashboard/last6DaysIncome', getLast6DaysIncomes)
 router.get('/dashboard/bestseller', getBestSeller)
 router.get('/dashboard/todayBestSeller', getTodayBestSeller)
+
+router.post('/outlet', addOutlet)
+router.delete('/outlet/:outletId', deleteOutlet)
 
 
 

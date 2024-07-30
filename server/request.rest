@@ -105,5 +105,20 @@ POST http://localhost:5000/items/search
 Content-Type: application/json
 
 {
-    "value" : "milkuat"
+    "value" : "dri"
 }
+
+###
+
+POST http://localhost:5000/outlet
+Content-Type: application/json
+
+{
+    "name" : "Toko Ria",
+    "address" : "Jl. Gunung Pengsong",
+    "phone" : "08192822382"
+}
+
+###
+
+DELETE http://localhost:5000/outlet/2
