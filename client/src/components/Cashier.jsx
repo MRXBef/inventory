@@ -100,14 +100,14 @@ const Cashier = () => {
             const discount = response.data.data.sumDiscount
             setReturns(rupiah(cashReturn))
             setDiscount(rupiah(discount))
-            setIsStoreClicked(true) // Mengubah state tombol
+            setIsStoreClicked(true)
         } catch (error) {
             console.log(error.response)
         }
     }
 
     const handleRefresh = () => {
-        window.location.reload() // Merefresh halaman
+        window.location.reload()
     }
 
     const searchProducts = async(query) => {

@@ -121,4 +121,20 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5000/outlet/2
+GET http://localhost:5000/outlet
+
+###
+
+PUT http://localhost:5000/outlet
+Content-Type: application/json
+
+{
+    "outletId" : "1",
+    "name" : "kios Firman",
+    "address" : "Jl. Pramuka",
+    "phone" : "081923827292"
+}
+
+###
+
+DELETE http://localhost:5000/outlet/3
