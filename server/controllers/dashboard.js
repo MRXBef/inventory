@@ -77,7 +77,7 @@ export const getTodayIncomes = async(req, res) => {
 export const getBestSeller = async(req, res) => {
     try {
         const NOW = new Date()
-        const SEVEN_DAYS_AGO = new Date(new Date(NOW.setDate(NOW.getDate() - 7)))
+        const SEVEN_DAYS_AGO = new Date(new Date(NOW.setDate(NOW.getDate() - 7)).setHours(0,0,0,0))
 
         const bestSellers = await Orders.findAll({
             where: {
