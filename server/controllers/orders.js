@@ -144,7 +144,7 @@ export const deleteRecordOrder = async(req, res) => {
 
 export const createFinalOrder = async(req, res) => {
     const {turnCode, cash} = req.body
-    if(!turnCode || !cash) return res.status(400)
+    if(!cash) return res.status(400).json({msg: "Cash required"})
     
 try {
     const recordsOrdered = await OrderRecordModel.findAll({
@@ -152,7 +152,7 @@ try {
             turnCode: turnCode
         }
     })
-    if(recordsOrdered.length <= 0) return res.status(400).json({msg: "Belum ada barang yang di scan!"})
+    if(recordsOrdered.length <= 0) return res.status(400).json({msg: "No item added yet"})
 
     //membuat gabungan item dan membuat total diskon (start)
     let items = []
@@ -249,7 +249,7 @@ try {
     //mengupdate stock barang yang di order (end)
 
     res.status(200).json({
-        msg: "Order successfully",
+        msg: "Order successfully created",
         data: {cashReturn, sumDiscount}
     })
     } catch (error) {

@@ -4,7 +4,7 @@ import axios from 'axios'
 import '../index.css'
 
 const Cashier = () => {
-    const [msg, setMsg] = useState('')
+    const [msg, setMsg] = useState(null)
     const [recordCode, setRecordCode] = useState('')
     const [productCode, setProductCode] = useState('')
     const [quantity, setQuantity] = useState('')
@@ -43,7 +43,7 @@ const Cashier = () => {
             setRecordCode(response.data.turn_code)
         } catch (error) {
             console.log(error)
-            setMsg(error.response.data.msg)
+            setMsg({msg: error.response.data.msg, color: 'red'})
         }
     }
 
@@ -63,8 +63,8 @@ const Cashier = () => {
             }
         } catch (error) {
             if(error.response) {
-                console.log(recordCode)
-                setMsg(error.response.data.msg)
+                console.log(error.response.data.msg)
+                setMsg({msg: error.response.data.msg, color: 'red'})
             }
         }
     }
@@ -84,7 +84,7 @@ const Cashier = () => {
             setTotal(rupiah(totalPrice))
         } catch (error) {
             console.log(error)
-            setMsg(error.response.data.msg)
+            setMsg({msg: error.response.data.msg, color: 'red'})
         }
     }
 
@@ -101,9 +101,10 @@ const Cashier = () => {
             setReturns(rupiah(cashReturn))
             setDiscount(rupiah(discount))
             setIsStoreClicked(true)
+            setMsg({msg: response.data.msg, color: 'green'})
         } catch (error) {
             console.log(error.response)
-            setMsg(error.response.data.msg)
+            setMsg({msg: error.response.data.msg, color: 'red'})
         }
     }
 
@@ -157,7 +158,7 @@ const Cashier = () => {
             }
         } catch (error) {
             console.log(error.response)
-            setMsg(error.response.data.msg)
+            setMsg({msg: error.response.data.msg, color: 'red'})
         }
     };
 
@@ -192,7 +193,7 @@ const Cashier = () => {
             }
         } catch (error) {
             console.log(error.response)
-            setMsg(error.response.data.msg)
+            setMsg({msg: error.response.data.msg, color: 'red'})
         }
     }
 
@@ -247,10 +248,10 @@ const Cashier = () => {
             <Sidebar/>
             {msg ? 
             <>
-                <div className='messages'>
-                    <p>{msg}</p>
+                <div className='messages' style={{backgroundColor: msg.color}}>
+                    <p>{msg.msg}</p>
                     <p style={{display: 'none'}}>
-                        {setTimeout(() => {setMsg('')}, 3000)}
+                        {setTimeout(() => {setMsg(null)}, 3000)}
                     </p>
                 </div>
             </>

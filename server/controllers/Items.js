@@ -231,7 +231,7 @@ export const deleteItem = async(req, res) => {
 
 export const addStock = async(req, res) => {
     const {stockAdded, dataView} = req.body
-    if(!stockAdded) return res.status(400).json({msg: "Stock are required"})
+    if(!stockAdded) return res.status(400).json({msg: "Stock is required"})
     const itemCode = req.params['kode']
     const attr = ['code', 'name', 'category', 'price', 'price', 'stock', 'discount']
 
