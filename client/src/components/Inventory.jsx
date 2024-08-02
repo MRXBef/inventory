@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { act, useEffect } from 'react'
 import Sidebar from './Sidebar'
 import axios from 'axios'
 import '../index.css'
@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom'
 const Inventory = () => {
   const [items, setItems] = useState([])
   const [activeButton, setActiveButton] = useState('All Category')
+  const [dataView, setDataView] = useState('')
   const [hideFormAddProduct, setHideFormAddProduct] = useState('hideFormAddProduct')
   const [hideFormAddStock, setHideFormAddStock] = useState('hideFormAddStock')
   
@@ -57,10 +58,12 @@ const Inventory = () => {
 
     try {
       const response = await axios.put(`http://localhost:5000/items/stock/${codeAddStock}`, {
-        stockAdded: totalAddStock
+        stockAdded: totalAddStock,
+        dataView: dataView
       })
       if(response) {
         setStockAddStock(response.data.data)
+        setItems(response.data.dataView)
       }
     } catch (error) {
       console.log(error.response)
@@ -85,23 +88,28 @@ const Inventory = () => {
       switch (category) {
         case 'Foods':
           response = await axios.get('http://localhost:5000/items/foods')
-          setItems(response.data.data) 
+          setItems(response.data.data)
+          setDataView(category)
           break;
         case 'Drinks':
           response = await axios.get('http://localhost:5000/items/drinks')
           setItems(response.data.data)
+          setDataView(category)
           break;
-        case 'Bathrooms':
+        case 'Bathroom':
           response = await axios.get('http://localhost:5000/items/bathroom')
           setItems(response.data.data)
+          setDataView(category)
           break;
-        case 'Kitchens':
+        case 'Kitchen':
           response = await axios.get('http://localhost:5000/items/kitchen')
           setItems(response.data.data)
+          setDataView(category)
           break;
         default:
           response = await axios.get('http://localhost:5000/items')
           setItems(response.data.data)
+          setDataView(category)
           break;
       }
     } catch (error) {
@@ -148,6 +156,7 @@ const Inventory = () => {
       const response = await axios.post('http://localhost:5000/items/search', {
         value: search
       })
+      setDataView(search)
       setItems(response.data.data)
       setActiveButton('')
     } catch (error) {
@@ -180,10 +189,10 @@ const Inventory = () => {
                     <button className={activeButton === 'Drinks' ? 'is-active-btn' : ''} onClick={() => handleButtonClick('Drinks')}>Drinks</button>
                   </li>
                   <li>
-                    <button className={activeButton === 'Bathrooms' ? 'is-active-btn' : ''} onClick={() => handleButtonClick('Bathrooms')}>Bathrooms</button>
+                    <button className={activeButton === 'Bathroom' ? 'is-active-btn' : ''} onClick={() => handleButtonClick('Bathroom')}>Bathrooms</button>
                   </li>
                   <li>
-                    <button className={activeButton === 'Kitchens' ? 'is-active-btn' : ''} onClick={() => handleButtonClick('Kitchens')}>Kithcens</button>
+                    <button className={activeButton === 'Kitchen' ? 'is-active-btn' : ''} onClick={() => handleButtonClick('Kitchen')}>Kithcens</button>
                   </li>
                   <li>
                     <button onClick={handleShowFormAddProduct}>Add Product</button>

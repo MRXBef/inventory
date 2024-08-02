@@ -25,7 +25,7 @@ export const addOutlet = async(req, res) => {
 }
 
 export const getOutlet = async(req, res) => {
-    try {
+    try { 
         const outlet = await Outlet.findAll({
             attributes: ['id', 'name', 'address', 'phone']
         })

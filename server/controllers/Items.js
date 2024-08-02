@@ -178,8 +178,9 @@ export const deleteItem = async(req, res) => {
 }
 
 export const addStock = async(req, res) => {
-    const {stockAdded} = req.body
+    const {stockAdded, dataView} = req.body
     const itemCode = req.params['kode']
+    const attr = ['code', 'name', 'category', 'price', 'price', 'stock', 'discount']
 
     try {
         const item = await Items.findOne({
@@ -192,9 +193,36 @@ export const addStock = async(req, res) => {
         item.stock += parseInt(stockAdded)
         await item.save()
 
+        let itemData = []
+        if(dataView == 'All Category'){
+            itemData = await Items.findAll({
+                attributes: attr
+            })
+        }else if(dataView != 'All Category' && dataView != 'Foods' && dataView != 'Drinks' && dataView != 'Kitchen' && dataView != 'Bathroom') {
+            itemData = await Items.findAll({
+                where: {
+                    [Op.or] : {
+                        name : {
+                            [Op.like] : `%${dataView}%`
+                        },
+                        code : {
+                            [Op.like] : `%${dataView}%`
+                        }
+                    }
+                },
+                attributes: attr
+            })
+        }else {
+            itemData = await Items.findAll({
+                where: {category : dataView},
+                attributes: attr
+            })
+        }
+
         res.status(200).json({
             msg: "Stock Successfully Added",
-            data: item.stock
+            data: item.stock,
+            dataView : itemData
         })
     } catch (error) {
         console.log(error)
