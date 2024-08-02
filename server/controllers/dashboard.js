@@ -164,14 +164,14 @@ export const getTodayBestSeller = async(req, res) => {
     }
 }
 
-export const getLast6DaysIncomes = async(req, res) => {
+export const getLast7DaysIncomes = async(req, res) => {
     try {
         // Create an array to hold income data for the last 6 days excluding today
         let incomes = new Array(6).fill(0);
         const NOW = new Date();
     
         // Get the date range for the last 6 days excluding today
-        const SIX_DAYS_AGO = new Date(new Date().setDate(NOW.getDate() - 6)).setHours(0,0,0,0);
+        const SIX_DAYS_AGO = new Date(new Date().setDate(NOW.getDate() - 7)).setHours(0,0,0,0);
         const TODAY_START = new Date(NOW.setHours(0, 0, 0, 0));
     
         // Fetch all orders from the last 6 days excluding today

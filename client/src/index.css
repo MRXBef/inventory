@@ -258,7 +258,7 @@ body{
 /* chart */
 .chartContainer {
   width: 700px;
-  height: 280px;
+  height: 290px;
   display: flex;
   justify-content: center;
   margin-top: 70px;

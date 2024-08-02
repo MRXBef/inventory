@@ -33,7 +33,7 @@ const Dashboard = () => {
 
   const getLast7Days = () => {
     const days = [];
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 7; i++) {
       const date = new Date();
       date.setDate(date.getDate() - i);
       const day = date.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
@@ -131,7 +131,7 @@ const Dashboard = () => {
     labels: getLast7Days(),
     datasets: [
       {
-        label: 'Last 6 days Incomes',
+        label: 'Last 7 days Incomes',
         data: chartData,
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
