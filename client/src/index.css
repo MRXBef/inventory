@@ -304,3 +304,24 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.messages{
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 50px;
+  background-color: red;
+  border-radius: 10px;
+  position: absolute;
+  top: 2%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999999;
+}
+
+.messages p {
+  text-align: center;
+  color: white;
+}

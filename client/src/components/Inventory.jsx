@@ -7,6 +7,7 @@ import {useNavigate} from 'react-router-dom'
 
 
 const Inventory = () => {
+  const [msg, setMsg] = useState('')
   const [items, setItems] = useState([])
   const [activeButton, setActiveButton] = useState('All Category')
   const [dataView, setDataView] = useState('')
@@ -23,7 +24,6 @@ const Inventory = () => {
   const [nameAddStock, setNameAddStock] = useState('')
   const [stockAddStock, setStockAddStock] = useState('')
   const [search, setSearch] = useState('')
-  const [msgAddProduct, setMsgAddProduct] = useState('')
 
   const [totalAddStock, setTotalAddStock] = useState('')
 
@@ -49,7 +49,7 @@ const Inventory = () => {
         navigate(0)
       } 
     } catch (error) {
-      setMsgAddProduct(error.response.data.msg)
+      setMsg(error.response.data.msg)
     }
   }
 
@@ -66,6 +66,7 @@ const Inventory = () => {
         setItems(response.data.dataView)
       }
     } catch (error) {
+      setMsg(error.response.data.msg)
       console.log(error.response)
     }
   }
@@ -78,6 +79,7 @@ const Inventory = () => {
       navigate(0)
     } catch (error) {
       console.log(error)
+      setMsg(error.response.data.msg)
     }
   }
 
@@ -114,6 +116,7 @@ const Inventory = () => {
       }
     } catch (error) {
       console.log(error)
+      setMsg(error.response.data.msg)
     }
   }
 
@@ -160,8 +163,8 @@ const Inventory = () => {
       setItems(response.data.data)
       setActiveButton('')
     } catch (error) {
-      console.log(error.response.data.msg)
       setItems([])
+      setMsg(error.response.data.msg)
     }
   }
 
@@ -172,6 +175,19 @@ const Inventory = () => {
   return (
     <div className='is-flex'>
         <Sidebar/>
+
+        {msg ? 
+            <>
+                <div className='messages'>
+                    <p>{msg}</p>
+                    <p style={{display: 'none'}}>
+                        {setTimeout(() => {setMsg('')}, 3000)}
+                    </p>
+                </div>
+            </>
+            :
+            ''
+            }
 
         <div className="inventoryContainer">
             <div className="judul">
@@ -286,7 +302,6 @@ const Inventory = () => {
                   <p className="help">Tambahkan diskon (jika perlu)</p>
                 </div>
                 <button className='button is-success is-fullwidth'>Add</button>
-              <p>{msgAddProduct}</p>
               </form>
             </div>
 

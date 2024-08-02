@@ -4,7 +4,7 @@ import axios from 'axios'
 import '../index.css'
 
 const Cashier = () => {
-    const [recordMsg, setRecordMsg] = useState('')
+    const [msg, setMsg] = useState('')
     const [recordCode, setRecordCode] = useState('')
     const [productCode, setProductCode] = useState('')
     const [quantity, setQuantity] = useState('')
@@ -43,6 +43,7 @@ const Cashier = () => {
             setRecordCode(response.data.turn_code)
         } catch (error) {
             console.log(error)
+            setMsg(error.response.data.msg)
         }
     }
 
@@ -56,16 +57,14 @@ const Cashier = () => {
                 quantity: quantity
             })
             if(response){
-                setRecordMsg('')
                 setProductCode('')
                 setQuantity('')
                 getRecords()
             }
         } catch (error) {
             if(error.response) {
-                console.log(error.response.data.msg)
                 console.log(recordCode)
-                setRecordMsg(error.response.data.msg)
+                setMsg(error.response.data.msg)
             }
         }
     }
@@ -85,6 +84,7 @@ const Cashier = () => {
             setTotal(rupiah(totalPrice))
         } catch (error) {
             console.log(error)
+            setMsg(error.response.data.msg)
         }
     }
 
@@ -103,6 +103,7 @@ const Cashier = () => {
             setIsStoreClicked(true)
         } catch (error) {
             console.log(error.response)
+            setMsg(error.response.data.msg)
         }
     }
 
@@ -155,7 +156,8 @@ const Cashier = () => {
                 getRecords();
             }
         } catch (error) {
-            console.log(error.response);
+            console.log(error.response)
+            setMsg(error.response.data.msg)
         }
     };
 
@@ -190,6 +192,7 @@ const Cashier = () => {
             }
         } catch (error) {
             console.log(error.response)
+            setMsg(error.response.data.msg)
         }
     }
 
@@ -242,13 +245,24 @@ const Cashier = () => {
     return (
         <div className='is-flex'>
             <Sidebar/>
+            {msg ? 
+            <>
+                <div className='messages'>
+                    <p>{msg}</p>
+                    <p style={{display: 'none'}}>
+                        {setTimeout(() => {setMsg('')}, 3000)}
+                    </p>
+                </div>
+            </>
+            :
+            ''
+            }
 
             <div className='myCashierContainer'>
                 <div className="judul">
                     <h1>Cashier</h1>
                 </div>
                 <div className="formContainer">
-                    <h1 className='mb-1' style={{color: 'red', fontWeight: 'bold', position: 'absolute', marginLeft: '450px', marginTop: '7px', zIndex: '999'}}>{recordMsg}</h1>
                     <form onSubmit={record} className='is-flex codeForm'>
                         <input 
                             type="text" 
@@ -256,7 +270,6 @@ const Cashier = () => {
                             placeholder='Search with code or name of product' 
                             value={productCode} 
                             onChange={handleProductCodeChange}
-                            onClick={() => {setRecordMsg('')}}
                         />
                         <input style={quantityStyle} type="number" className='input' placeholder='Quantity' value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
                         <button style={addButtonStyle} className='button is-success'>+</button>
