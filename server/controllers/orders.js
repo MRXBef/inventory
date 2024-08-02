@@ -71,8 +71,13 @@ export const createRecordOrder = async(req, res) => {
                 code: itemCode.toUpperCase()
             }
         })
-        if(!item) return res.status(400).json({msg: "Item not found"})
-        if(item.dataValues.stock == 0) return res.status(400).json({msg: "Out of stock"})
+        if(!item) {
+            return res.status(400).json({msg: "Item not found"}) 
+        }else if(item.dataValues.stock == 0){
+            return res.status(400).json({msg: "Out of stock"}) 
+        }else if(item.dataValues.stock < quantity) {
+            return res.status(400).json({msg: "Stock not enought"})
+        } 
 
         const checkItemIsRecorded = await orderRecords.findOne({
             where: {
