@@ -41,6 +41,15 @@ export const addItem = async(req, res) => {
 
         return code
     }
+    
+    const toUpperCaseFirstStr = (str) => {
+        let arr = [], finalArr = []
+        str.split(' ').forEach(element => {
+              arr.push(element)
+        });
+        arr.forEach(e => {finalArr.push(e.replace(/^\w/, (c) => c.toUpperCase()))})
+      return finalArr.join(' ')
+    }
 
     try {
         const validCode = await createItemCode(category)
@@ -52,7 +61,16 @@ export const addItem = async(req, res) => {
             stock: stock,
             discount: convDiscount ?? 0
         })
-        res.status(200).json({msg: "Data recived"})
+
+        const itemData = await Items.findAll({
+            where: {category: category}
+        })
+        res.status(200).json({
+            msg: `${name.toUpperCase()} Successfully added`,
+            dataView: itemData,
+            activeButton: toUpperCaseFirstStr(category)
+
+        })
     } catch (error) {
         console.log(error)
         res.status(500).json({msg: "Internal server error"})
@@ -160,7 +178,11 @@ export const updateItem = async(req, res) => {
 
 export const deleteItem = async(req, res) => {
     const itemCode = req.params['kode']
-    
+    const {dataView} = req.body
+    console.log(dataView)
+    if(!itemCode || !dataView) return res.status(400).json({msg: "error"})
+    const attr = ['code', 'name', 'category', 'price', 'price', 'stock', 'discount']
+
     try {
         const item = await Items.findOne({
             where: {
@@ -170,7 +192,37 @@ export const deleteItem = async(req, res) => {
         if(!item) return res.status(400).json({msg: "Item not found"})
         
         await item.destroy()
-        res.status(200).json({msg: "Data deleted"})
+
+        let itemData = []
+        if(dataView == 'All Category'){
+            itemData = await Items.findAll({
+                attributes: attr
+            })
+        }else if(dataView != 'All Category' && dataView != 'Foods' && dataView != 'Drinks' && dataView != 'Kitchen' && dataView != 'Bathroom') {
+            itemData = await Items.findAll({
+                where: {
+                    [Op.or] : {
+                        name : {
+                            [Op.like] : `%${dataView}%`
+                        },
+                        code : {
+                            [Op.like] : `%${dataView}%`
+                        }
+                    }
+                },
+                attributes: attr
+            })
+        }else {
+            itemData = await Items.findAll({
+                where: {category : dataView},
+                attributes: attr
+            })
+        }
+
+        res.status(200).json({
+            msg: `"${item.name.toUpperCase()}" Deleted`,
+            dataView: itemData
+        })
     } catch (error) {
         console.log(error)
         res.status(500).json({msg: "Internal server error"})
@@ -221,7 +273,7 @@ export const addStock = async(req, res) => {
         }
 
         res.status(200).json({
-            msg: "Stock Successfully Added",
+            msg: `"${item.name.toUpperCase()}" Stock Changed to ${item.stock}`,
             data: item.stock,
             dataView : itemData
         })

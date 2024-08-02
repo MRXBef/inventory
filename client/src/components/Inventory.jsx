@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom'
 
 
 const Inventory = () => {
-  const [msg, setMsg] = useState('')
+  const [msg, setMsg] = useState(null)
   const [items, setItems] = useState([])
   const [activeButton, setActiveButton] = useState('All Category')
   const [dataView, setDataView] = useState('')
@@ -46,10 +46,12 @@ const Inventory = () => {
       })
       if(response) {
         setHideFormAddProduct('hideFormAddProduct')
-        navigate(0)
+        setActiveButton(response.data.activeButton)
+        setItems(response.data.dataView)
+        setMsg({msg: response.data.msg, color: 'green'})
       } 
     } catch (error) {
-      setMsg(error.response.data.msg)
+      setMsg({msg: error.response.data.msg, color: 'red'})
     }
   }
 
@@ -62,24 +64,29 @@ const Inventory = () => {
         dataView: dataView
       })
       if(response) {
+        setHideFormAddStock('hideFormAddStock')
         setStockAddStock(response.data.data)
         setItems(response.data.dataView)
+        setMsg({msg: response.data.msg, color: 'green'})
       }
     } catch (error) {
-      setMsg(error.response.data.msg)
-      console.log(error.response)
+      setMsg({msg: error.response.data.msg, color: 'red'})
     }
   }
 
   const handleDeleteItems = async(code, name) => {
     if(confirm(`Are you sure want to delete ${name.toUpperCase()}?`) != true) return
     try {
-      await axios.delete(`http://localhost:5000/items/${code}`)
-      alert("Berhasil di hapus")
-      navigate(0)
+      const response = await axios.delete(`http://localhost:5000/items/${code}`, {
+        data: {dataView: dataView}
+      })
+      if(response) {
+        setItems(response.data.dataView)
+        setMsg({msg: response.data.msg, color: 'green'})
+      }
     } catch (error) {
       console.log(error)
-      setMsg(error.response.data.msg)
+      setMsg({msg: error.response.data.msg, color: 'red'})
     }
   }
 
@@ -116,7 +123,7 @@ const Inventory = () => {
       }
     } catch (error) {
       console.log(error)
-      setMsg(error.response.data.msg)
+      setMsg({msg: error.response.data.msg, color: 'red'})
     }
   }
 
@@ -164,7 +171,7 @@ const Inventory = () => {
       setActiveButton('')
     } catch (error) {
       setItems([])
-      setMsg(error.response.data.msg)
+      setMsg({msg: error.response.data.msg, color: 'red'})
     }
   }
 
@@ -178,16 +185,16 @@ const Inventory = () => {
 
         {msg ? 
             <>
-                <div className='messages'>
-                    <p>{msg}</p>
+                <div className='messages' style={{ backgroundColor: msg.color }}>
+                    <p>{msg.msg}</p>
                     <p style={{display: 'none'}}>
-                        {setTimeout(() => {setMsg('')}, 3000)}
+                        {setTimeout(() => {setMsg(null)}, 3000)}
                     </p>
                 </div>
             </>
             :
             ''
-            }
+        }
 
         <div className="inventoryContainer">
             <div className="judul">
