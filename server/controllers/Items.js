@@ -159,7 +159,7 @@ export const updateItem = async(req, res) => {
                 code: itemCode
             }
         })
-        if(!item) return res.status(400).json({msg: "Item not found!"})
+        if(!item) return res.status(404).json({msg: "Item not found"})
 
         await item.update({
             name: name || item.name,
@@ -189,7 +189,7 @@ export const deleteItem = async(req, res) => {
                 code: itemCode
             }
         })
-        if(!item) return res.status(400).json({msg: "Item not found"})
+        if(!item) return res.status(404).json({msg: "Item not found"})
         
         await item.destroy()
 
@@ -241,7 +241,7 @@ export const addStock = async(req, res) => {
                 code: itemCode
             }
         })
-        if(!item) return res.status(400).json({msg: "Item not found"})
+        if(!item) return res.status(404).json({msg: "Item not found"})
 
         item.stock += parseInt(stockAdded)
         await item.save()
@@ -300,7 +300,7 @@ export const searchItem = async(req, res) => {
                 }
             }
         })
-        if(item.length < 1) return res.status(403).json({msg: "Item not found"})
+        if(item.length < 1) return res.status(404).json({msg: "Item not found"})
         res.status(200).json({data: item})
    } catch (error) {
         console.log(error)
