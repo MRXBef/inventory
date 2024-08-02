@@ -171,7 +171,7 @@ export const getLast6DaysIncomes = async(req, res) => {
         const NOW = new Date();
     
         // Get the date range for the last 6 days excluding today
-        const SIX_DAYS_AGO = new Date(new Date().setDate(NOW.getDate() - 6));
+        const SIX_DAYS_AGO = new Date(new Date().setDate(NOW.getDate() - 6)).setHours(0,0,0,0);
         const TODAY_START = new Date(NOW.setHours(0, 0, 0, 0));
     
         // Fetch all orders from the last 6 days excluding today
