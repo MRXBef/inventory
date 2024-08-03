@@ -37,7 +37,7 @@ const Inventory = () => {
     e.preventDefault()
     
     try {
-      const response = await axios.post('http://localhost:5000/items', {
+      const response = await axios.post(`${import.meta.env.VITE_BASEURL}/items`, {
         name: name,
         category: category,
         price: price,
@@ -59,7 +59,7 @@ const Inventory = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.put(`http://localhost:5000/items/stock/${codeAddStock}`, {
+      const response = await axios.put(`${import.meta.env.VITE_BASEURL}/items/stock/${codeAddStock}`, {
         stockAdded: totalAddStock,
         dataView: dataView
       })
@@ -77,7 +77,7 @@ const Inventory = () => {
   const handleDeleteItems = async(code, name) => {
     if(confirm(`Are you sure want to delete ${name.toUpperCase()}?`) != true) return
     try {
-      const response = await axios.delete(`http://localhost:5000/items/${code}`, {
+      const response = await axios.delete(`${import.meta.env.VITE_BASEURL}/items/${code}`, {
         data: {dataView: dataView}
       })
       if(response) {
@@ -96,7 +96,7 @@ const Inventory = () => {
       let response
       switch (category) {
         case 'Foods':
-          response = await axios.get('http://localhost:5000/items/foods')
+          response = await axios.get(`${import.meta.env.VITE_BASEURL}/items/foods`)
           setItems(response.data.data)
           setDataView(category)
           break;
@@ -163,7 +163,7 @@ const Inventory = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post('http://localhost:5000/items/search', {
+      const response = await axios.post(`${import.meta.env.VITE_BASEURL}/items/search`, {
         value: search
       })
       setDataView(search)

@@ -66,7 +66,7 @@ const Dashboard = () => {
 
   const getProduct = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/dashboard/items');
+      const response = await axios.get(`${import.meta.env.VITE_BASEURL}/dashboard/items`);
       setProduct(response.data.total_product);
     } catch (error) {
       console.log(error.response)
@@ -75,7 +75,7 @@ const Dashboard = () => {
 
   const getStock = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/dashboard/stock');
+      const response = await axios.get(`${import.meta.env.VITE_BASEURL}/dashboard/stock`);
       setStock(response.data.total_stock);
     } catch (error) {
       console.log(error.response)
@@ -84,7 +84,7 @@ const Dashboard = () => {
 
   const getTodayOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/dashboard/todayOrders');
+      const response = await axios.get(`${import.meta.env.VITE_BASEURL}/dashboard/todayOrders`);
       setTodayOrders(response.data.total_today_orders);
     } catch (error) {
       console.log(error.response)
@@ -93,7 +93,7 @@ const Dashboard = () => {
 
   const getTodayIncomes = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/dashboard/todayIncome');
+      const response = await axios.get(`${import.meta.env.VITE_BASEURL}/dashboard/todayIncome`);
       setTodayIncomes(rupiah(response.data.total_today_income));
     } catch (error) {
       console.log(error.response)
@@ -102,7 +102,7 @@ const Dashboard = () => {
 
   const getLast6DaysIncomes = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/dashboard/last6DaysIncome')
+      const response = await axios.get(`${import.meta.env.VITE_BASEURL}/dashboard/last6DaysIncome`)
       setChartData(response.data.incomes)
     } catch (error) {
       console.log(error.response)
@@ -111,7 +111,7 @@ const Dashboard = () => {
 
   const getBestSellerProduct = async() => {
     try {
-      const response = await axios.get('http://localhost:5000/dashboard/bestseller')
+      const response = await axios.get(`${import.meta.env.VITE_BASEURL}/dashboard/bestseller`)
       setBestSeller(response.data.item.toUpperCase())
     } catch (error) {
       console.log(error.response)
@@ -120,7 +120,7 @@ const Dashboard = () => {
 
   const getTodayBestSellerProduct = async() => {
     try {
-      const response = await axios.get('http://localhost:5000/dashboard/todayBestSeller')
+      const response = await axios.get(`${import.meta.env.VITE_BASEURL}/dashboard/todayBestSeller`)
       setTodayBestSeller(response.data.item.toUpperCase())
     } catch (error) {
       console.log(error.response)

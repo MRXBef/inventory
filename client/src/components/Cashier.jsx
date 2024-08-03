@@ -39,7 +39,7 @@ const Cashier = () => {
 
     const getTurnCode = async() => {
         try {
-            const response = await axios.get('http://localhost:5000/record/code')
+            const response = await axios.get(`${import.meta.env.VITE_BASEURL}/record/code`)
             setRecordCode(response.data.turn_code)
         } catch (error) {
             console.log(error)
@@ -51,7 +51,7 @@ const Cashier = () => {
         e.preventDefault()
 
         try {
-            const response = await axios.post('http://localhost:5000/record', {
+            const response = await axios.post(`${import.meta.env.VITE_BASEURL}/record`, {
                 turnCode: recordCode,
                 itemCode: productCode,
                 quantity: quantity
@@ -71,7 +71,7 @@ const Cashier = () => {
 
     const getRecords = async() => {
         try {
-            const response = await axios.get(`http://localhost:5000/record/turncode/${recordCode}`)
+            const response = await axios.get(`${import.meta.env.VITE_BASEURL}/record/turncode/${recordCode}`)
             setRecords(response.data.data)
     
             let price = []
@@ -92,7 +92,7 @@ const Cashier = () => {
         e.preventDefault()
 
         try {
-            const response = await axios.post('http://localhost:5000/orders', {
+            const response = await axios.post(`${import.meta.env.VITE_BASEURL}/orders`, {
                 turnCode: recordCode,
                 cash: cash
             })
@@ -114,7 +114,7 @@ const Cashier = () => {
 
     const searchProducts = async(query) => {
         try {
-            const response = await axios.post(`http://localhost:5000/items/search`, {
+            const response = await axios.post(`${import.meta.env.VITE_BASEURL}/items/search`, {
                 value: query
             })
             setProductList(response.data.data)
@@ -149,7 +149,7 @@ const Cashier = () => {
         const newPrice = Number(rawValue);
 
         try {
-            const response = await axios.post('http://localhost:5000/record/changePrice', {
+            const response = await axios.post(`${import.meta.env.VITE_BASEURL}/record/changePrice`, {
                 itemId: id,
                 newPrice: newPrice
             });
@@ -187,7 +187,7 @@ const Cashier = () => {
     
     const handleDeleteRecord = async(recordId) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/record/${recordId}`)
+            const response = await axios.delete(`${import.meta.env.VITE_BASEURL}/record/${recordId}`)
             if(response) {
                 getRecords()
             }

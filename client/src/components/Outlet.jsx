@@ -16,7 +16,8 @@ const Outlet = () => {
 
     const getOutlet = async() => {
         try {
-            const response = await axios.get('http://localhost:5000/outlet')
+            const response = await axios.get(`${import.meta.env.VITE_BASEURL}/outlet`)
+            console.log(response)
             if(response){
                 setOutlets(response.data.data)
             }
@@ -53,10 +54,12 @@ const Outlet = () => {
                             </div>
                             <div style={{display: 'flex', gap: '5px', position: 'absolute', bottom: '10px'}}>
                                 <i >
-                                    <CIcon icon={icon.cilPhone}/>
+                                    <CIcon style={{color: 'green'}} icon={icon.cilPhone}/>
                                 </i>
                                 <p>{outlet.phone}</p>
-                                <a href={`https://wa.me/+62${outlet.phone}`} target="_blank" className='button' style={{height: '25px', backgroundColor: 'green'}}>Chat</a>
+                                <a href={`https://wa.me/+62${outlet.phone}`} target="_blank" className='button' style={{height: '30px', marginTop: '-5px', backgroundColor: 'green', outlet: 'none', border: 'none', position: 'absolute', left: '220px', bottom: '5px', padding: '20px'}}>
+                                    <i style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}><CIcon icon={icon.cilChatBubble}/></i>
+                                </a>
                             </div>
                         </div>
                     ))
