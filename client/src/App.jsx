@@ -2,6 +2,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import Dashboard from './components/Dashboard'
 import Cashier from './components/Cashier'
 import Inventory from './components/Inventory'
+import Outlet from './components/Outlet'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
        <Route path="/" element={<Dashboard/>}/>
        <Route path="/inventory" element={<Inventory/>}/>
        <Route path="/cashier" element={<Cashier/>}/>
+       <Route path="/Outlet" element={<Outlet/>}/>
      </Routes>
    </Router>
     </>

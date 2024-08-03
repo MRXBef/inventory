@@ -184,6 +184,7 @@ const Dashboard = () => {
     color: 'black',
     borderLeft: '10px solid darkorange',
     paddingLeft: '10px',
+    marginTop: '3px'
   };
   const judulStyle = {
     position: 'absolute',

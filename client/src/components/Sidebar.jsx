@@ -10,8 +10,11 @@ const Sidebar = () => {
           <li className="mb-1">
             <a href="/">Dashboard</a>
           </li>
-          <li>
+          <li className="mb-1">
             <a href="/inventory">Inventory</a>
+          </li>
+          <li>
+            <a href="/outlet">Outlet</a>
           </li>
         </ul>
         <p className="menu-label">Transaction</p>

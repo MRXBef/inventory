@@ -31,7 +31,7 @@ export const getOutlet = async(req, res) => {
         })
         if(outlet.length <= 0) return res.status(403).json({msg: "Outlet belum dibuat"})
         res.status(200).json({
-            ...outlet
+            data: outlet
         })
     } catch (error) {
         console.log(error.message)
