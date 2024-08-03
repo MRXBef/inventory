@@ -86,6 +86,7 @@ export const getBestSeller = async(req, res) => {
                 }
             }
         })
+        if(bestSellers.length <= 0) return res.status(200).json({item: "No order last week"})
         let items = [], bestSeller = []
         bestSellers.forEach(element => {
             bestSeller.push(element.dataValues.items.split(','))
@@ -131,6 +132,7 @@ export const getTodayBestSeller = async(req, res) => {
                 }
             }
         })
+        if(bestSellers.length <= 0) return res.status(200).json({item: "No order today"})
         let items = [], bestSeller = []
         bestSellers.forEach(element => {
             bestSeller.push(element.dataValues.items.split(','))
