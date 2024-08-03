@@ -114,9 +114,9 @@ POST http://localhost:5000/outlet
 Content-Type: application/json
 
 {
-    "name" : "Toko Ria",
-    "address" : "Jl. Gunung Pengsong",
-    "phone" : "08192822382"
+    "name" : "Kios Eva",
+    "address" : "Jl. Lekong No 01",
+    "phone" : "087864589890"
 }
 
 ###

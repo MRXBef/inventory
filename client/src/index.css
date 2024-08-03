@@ -164,7 +164,7 @@ body{
 .tableContainer {
   margin-top: 10px;
   width: 100%;
-  height: 600px;
+  height: 680px;
   border-top: 3px solid lightgray;
   border-left: 3px solid lightgray;
   overflow: scroll;
@@ -250,7 +250,7 @@ body{
 /* outlet */
 .outletContainer {
   width: 82%;
-  height: 10000vh;
+  height: 100vh;
   margin-left: 320px;
 }
 
@@ -261,6 +261,7 @@ body{
 }
 
 .outletContent {
+  margin-top: -50px;
   width: 100%;
   padding: 20px;
   display: flex;
@@ -286,6 +287,56 @@ body{
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 20px;
+  position: absolute;
+  bottom: 5px;
+}
+
+.pagination button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #e0e0e0;
+}
+
+.pagination button.active {
+  background-color: darkorange;
+  color: white;
+  border: none;
+}
+
+.pagination-arrow {
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination-arrow:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+}
+
+
 
 
 
