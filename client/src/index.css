@@ -260,6 +260,21 @@ body{
   display: flex;
 }
 
+.addOutlet {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.addOutlet form {
+  display: flex;
+}
+
+.addOutlet button {
+  height: 50px;
+}
+
 .outletContent {
   margin-top: -50px;
   width: 100%;

@@ -8,6 +8,13 @@ import axios from 'axios';
 const Outlet = () => {
     const [outlets, setOutlets] = useState([]);
     const [msg, setMsg] = useState(null);
+    const [search, setSearch] = useState('');
+    const [outlet, setOutlet] = useState({
+        name: '',
+        address: '',
+        phone: ''
+    })
+    const [hideFormAddProduct, setHideFormAddProduct] = useState('hideFormAddProduct')
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -27,6 +34,45 @@ const Outlet = () => {
             console.log(error);
             setMsg({ msg: error.response.data.msg, color: 'red' });
         }
+    };
+
+    const handleSearchOutlet = async(e) => {
+        e.preventDefault()
+
+        //handleSearch
+    }
+
+    const handleAddOutlet = async(e) => {
+        e.preventDefault()
+
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BASEURL}/outlet`, {
+                name: outlet.name,
+                address: outlet.address,
+                phone: outlet.phone
+            })
+            if(response) {
+                setMsg({msg: response.data.msg, color: 'green'})
+                setOutlets(response.data.data)
+                setHideFormAddProduct('hideFormAddProduct')
+                setCurrentPage(1)
+            }
+        } catch (error) {
+            setMsg({msg: error.response.data.msg, color: 'red'})
+        }
+
+    }
+
+    const handleShowFormAddProduct = () => {
+        setHideFormAddProduct('')
+      }
+    
+    const handleHideFormAddProduct = () => {
+        setHideFormAddProduct('hideFormAddProduct')
+    }
+
+    const stopPropagation = (e) => {
+        e.stopPropagation();
     };
 
     // Calculate the current items to display
@@ -98,6 +144,13 @@ const Outlet = () => {
                     <div className="judul">
                         <h1>Outlet</h1>
                     </div>
+                    <div className="addOutlet">
+                        <form onSubmit={handleSearchOutlet}>
+                            <input onChange={(e) => setSearch(e.target.value)} type="text"  placeholder='Search'/>
+                            <button type='button' className='button'><i><CIcon icon={icon.cilSearch}/></i></button>
+                        </form>
+                        <button onClick={handleShowFormAddProduct} className="button">Add Outlet</button>
+                    </div>
                 </div>
                 <div className="outletContent">
                     {currentOutlets.map((outlet, index) => (
@@ -130,6 +183,34 @@ const Outlet = () => {
                             </div>
                         </div>
                     ))}
+                </div>
+
+                {/* form add outlet */}
+                <div onClick={handleHideFormAddProduct} className={`formAddProduct ${hideFormAddProduct}`}>
+                <form style={{height: 'auto'}} onSubmit={handleAddOutlet} onClick={stopPropagation} action="">
+                    <div className="field">
+                        <label className="label">Name</label>
+                        <div className="control">
+                            <input className="input" type="text" placeholder="" onChange={(e) => outlet.name = e.target.value}/>
+                        </div>
+                        <p className="help">Masukkan nama outlet</p>
+                    </div>
+                    <div className="field">
+                        <label className="label">Address</label>
+                        <div className="control">
+                            <input className="input" type="text" placeholder="" onChange={(e) => outlet.address = e.target.value}/>
+                        </div>
+                        <p className="help">Masukkan alamat outlet</p>
+                    </div>
+                    <div className="field">
+                        <label className="label">Phone</label>
+                        <div className="control">
+                            <input className="input" type="number" placeholder="" onChange={(e) => outlet.phone = e.target.value}/>
+                        </div>
+                        <p className="help">Masukkan nomor hp pemilik outlet</p>
+                    </div>
+                    <button className='button is-success is-fullwidth'>Add Outlet</button>
+                </form>
                 </div>
 
                 {/* Pagination Controls */}

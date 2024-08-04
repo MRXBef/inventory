@@ -17,7 +17,17 @@ export const addOutlet = async(req, res) => {
             address: address,
             phone: phone
         })
-        res.status(200).json({msg: "Outlet successfully created"})
+
+        const outlet = await Outlet.findAll({
+            attributes: ['id', 'name', 'address', 'phone'],
+            order: [
+                ['createdAt', 'DESC']
+            ]
+        })
+        res.status(200).json({
+            msg: "Outlet successfully created",
+            data: outlet
+        })
     } catch (error) {
         console.log(error.message)
         res.status(500).json({msg: "Internal server error"})
@@ -27,7 +37,10 @@ export const addOutlet = async(req, res) => {
 export const getOutlet = async(req, res) => {
     try { 
         const outlet = await Outlet.findAll({
-            attributes: ['id', 'name', 'address', 'phone']
+            attributes: ['id', 'name', 'address', 'phone'],
+            order: [
+                ['createdAt', 'DESC']
+            ]
         })
         if(outlet.length <= 0) return res.status(403).json({msg: "Outlet belum dibuat"})
         res.status(200).json({
