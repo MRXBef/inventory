@@ -4,6 +4,8 @@ import axios from 'axios'
 import '../index.css'
 import { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
+import CIcon from '@coreui/icons-react';
+import * as icon from '@coreui/icons';
 
 
 const Inventory = () => {
@@ -221,8 +223,9 @@ const Inventory = () => {
                     <button onClick={handleShowFormAddProduct}>Add Product</button>
                   </li>
                   <li>
-                    <form onSubmit={handleSearch}>
-                      <input placeholder='Cari' type="text" className="searchItem" onChange={(e) => setSearch(e.target.value)} />
+                    <form onSubmit={handleSearch} style={{display: 'flex', alignItems: 'center', gap: '2px'}}>
+                      <input placeholder='Search' type="text" className="searchItem" onChange={(e) => setSearch(e.target.value)} />
+                      <button style={{width: '50px', height: '41px', border: 'none', color: 'white', display: 'flex', alignItems: 'center'}} type='submit' className='button'><i style={{lineHeight: '10px'}}><CIcon icon={icon.cilSearch}/></i></button>
                     </form>
                   </li>
                 </ul>
@@ -251,8 +254,8 @@ const Inventory = () => {
                             <td>{item.discount * 100}%</td>
                             <td>{rupiah(item.price)}</td>
                             <td>
-                              <button onClick={() => handleAddStock(item.code, item.name, item.stock)} className='button is-success is-small'>Add Stock</button>
-                              <button onClick={() => handleDeleteItems(item.code, item.name)} className='button ml-3 is-danger is-small'>Remove</button>
+                              <button style={{border: 'none', backgroundColor: 'darkgreen'}} onClick={() => handleAddStock(item.code, item.name, item.stock)} className='button is-small'>Add Stock</button>
+                              <button style={{border: 'none', backgroundColor: 'darkred'}} onClick={() => handleDeleteItems(item.code, item.name)} className='button ml-3 is-small'>Remove</button>
                             </td>
                           </tr>
                         ))

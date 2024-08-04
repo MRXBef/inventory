@@ -193,7 +193,7 @@ const Dashboard = () => {
     fontWeight: 'bold',
     color: 'black',
     borderBottom: '3px solid lightgrey',
-    paddingRight: '670px',
+    paddingRight: '34%',
   };
   const incomeStyle = {
     backgroundColor: 'darkorange',

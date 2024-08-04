@@ -269,6 +269,7 @@ body{
 
 .addOutlet form {
   display: flex;
+  gap: 2px;
 }
 
 .addOutlet button {
@@ -364,7 +365,7 @@ body{
 /* chart */
 .chartContainer {
   width: 700px;
-  height: 290px;
+  height: 300px;
   display: flex;
   justify-content: center;
   margin-top: 70px;
@@ -374,7 +375,7 @@ body{
 }
 
 .chartView {
-  transform: scale(1.5);
+  transform: scale(1.3);
 }
 
 .searchItem {

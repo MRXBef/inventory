@@ -169,7 +169,7 @@ const Outlet = () => {
                     <div className="addOutlet">
                         <form onSubmit={handleSearchOutlet}>
                             <input onChange={(e) => setSearch(e.target.value)} type="text"  placeholder='Search'/>
-                            <button type='button' className='button'><i><CIcon icon={icon.cilSearch}/></i></button>
+                            <button style={{width: '50px'}} type='button' className='button'><i><CIcon icon={icon.cilSearch}/></i></button>
                         </form>
                         <button onClick={handleShowFormAddProduct} className="button">Add Outlet</button>
                     </div>
