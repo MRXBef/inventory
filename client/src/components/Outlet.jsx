@@ -4,6 +4,7 @@ import outletBackground from '../assets/img/outletBackground2.png';
 import CIcon from '@coreui/icons-react';
 import * as icon from '@coreui/icons';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Outlet = () => {
     const [outlets, setOutlets] = useState([]);
@@ -19,6 +20,9 @@ const Outlet = () => {
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8; // Number of items per page
+
+    //navigate
+    const navigate = useNavigate()
 
     useEffect(() => {
         getOutlet();
@@ -39,7 +43,17 @@ const Outlet = () => {
     const handleSearchOutlet = async(e) => {
         e.preventDefault()
 
-        //handleSearch
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BASEURL}/outlet/search`, {
+                value: search
+            })
+            if(response) {
+                setOutlets(response.data.data)
+                setCurrentPage(1)
+            }
+        } catch (error) {
+            setMsg({msg: error.response.data.msg, color: 'red'})
+        }
     }
 
     const handleAddOutlet = async(e) => {
@@ -164,12 +178,12 @@ const Outlet = () => {
             <div className="outletContainer">
                 <div className="outletHeader">
                     <div className="judul">
-                        <h1>Outlet</h1>
+                        <h1 style={{cursor: 'pointer'}} onClick={function(){navigate(0)}}>Outlet</h1>
                     </div>
                     <div className="addOutlet">
                         <form onSubmit={handleSearchOutlet}>
                             <input onChange={(e) => setSearch(e.target.value)} type="text"  placeholder='Search'/>
-                            <button style={{width: '50px'}} type='button' className='button'><i><CIcon icon={icon.cilSearch}/></i></button>
+                            <button style={{width: '50px'}} type='submit' className='button'><i><CIcon icon={icon.cilSearch}/></i></button>
                         </form>
                         <button onClick={handleShowFormAddProduct} className="button">Add Outlet</button>
                     </div>

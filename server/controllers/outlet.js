@@ -99,3 +99,38 @@ export const deleteOutlet = async(req, res) => {
         res.status(500).json({msg: "Internal server error"})
     }
 }
+
+export const searchOutlet = async(req, res) => {
+    const {value} = req.body
+    if(!value) return res.status(400).json({msg: "Value required"})
+
+    try {
+        const outlets = await Outlet.findAll({
+            where: {
+                [Op.or]: {
+                    name: {
+                        [Op.like] : `%${value}%`
+                    },
+                    address: {
+                        [Op.like] : `%${value}%`
+                    },
+                    phone: {
+                        [Op.like] : `%${value}%`
+                    }
+                }
+            },
+            attributes: ['id', 'name', 'address', 'phone'],
+            order: [
+                ['createdAt', 'DESC']
+            ]
+        })
+        if(outlets.length <= 0) return res.status(404).json({msg: "Outlet's not found"})
+
+        res.status(200).json({
+            data: outlets
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({msg: "Internal server error"})
+    }
+}
