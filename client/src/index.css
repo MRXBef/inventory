@@ -15,7 +15,7 @@ body{
 .my-dashboard{
   display: flex;
   flex-direction: column;
-  width: 1580px;
+  width: 80%;
   margin-left: 320px;
   height: 100vh;
   /* background-color: yellow; */

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import outletBackground from '../assets/img/outletBackground.jpeg';
+import outletBackground from '../assets/img/outletBackground2.png';
 import CIcon from '@coreui/icons-react';
 import * as icon from '@coreui/icons';
 import axios from 'axios';
@@ -56,11 +56,33 @@ const Outlet = () => {
                 setOutlets(response.data.data)
                 setHideFormAddProduct('hideFormAddProduct')
                 setCurrentPage(1)
+                setOutlet({name: '', address: '', phone: ''})
             }
         } catch (error) {
             setMsg({msg: error.response.data.msg, color: 'red'})
         }
 
+    }
+
+    const handleDeleteOutlet = async(outletId, outletName) => {
+        if(confirm(`Are you sure want to delete ${outletName.toUpperCase()}`) != true) return
+        try {
+            const response = await axios.delete(`${import.meta.env.VITE_BASEURL}/outlet/${outletId}`)            
+            if(response) {
+                setMsg({msg: response.data.msg, color: 'green'})
+                setOutlets(response.data.data)
+            }
+        } catch (error) {
+            setMsg({msg: error.response.data.msg, color: 'red'})
+        }
+    }
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target
+        setOutlet((prevOutlet) => ({
+            ...prevOutlet,
+            [name]: value
+        }))
     }
 
     const handleShowFormAddProduct = () => {
@@ -156,7 +178,9 @@ const Outlet = () => {
                     {currentOutlets.map((outlet, index) => (
                         <div key={index} className="outletBox">
                             <i style={{ position: 'absolute', top: '15px', right: '15px', display: 'flex', justifyContent: 'center', cursor: 'pointer' }}><CIcon icon={icon.cilPen} /></i>
-                            <img src={outletBackground} />
+                            <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                                <img src={outletBackground} style={{height: '150px'}} />
+                            </div>
                             <div style={{ display: 'flex', gap: '5px' }}>
                                 <i style={{ marginTop: '5px' }}>
                                     <CIcon icon={icon.cilHouse} />
@@ -174,10 +198,10 @@ const Outlet = () => {
                                     <CIcon style={{ color: 'green' }} icon={icon.cilPhone} />
                                 </i>
                                 <p>{outlet.phone}</p>
-                                <a href={`https://wa.me/+62${outlet.phone}`} target="_blank" className='button' style={{ height: '30px', marginTop: '-5px', backgroundColor: 'green', border: 'none', position: 'absolute', left: '165px', bottom: '-13px', padding: '20px' }}>
+                                <a href={`https://wa.me/+62${outlet.phone}`} target="_blank" className='button' style={{ height: '30px', marginTop: '-5px', backgroundColor: 'darkgreen', border: 'none', position: 'absolute', left: '155px', bottom: '-13px', padding: '20px' }}>
                                     <i style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><CIcon icon={icon.cilChatBubble} /></i>
                                 </a>
-                                <button className='button' style={{ height: '30px', marginTop: '-5px', backgroundColor: 'red', border: 'none', position: 'absolute', left: '220px', bottom: '-13px', padding: '20px' }}>
+                                <button onClick={() =>handleDeleteOutlet(outlet.id, outlet.name)} className='button' style={{ height: '30px', marginTop: '-5px', backgroundColor: 'darkred', border: 'none', position: 'absolute', left: '210px', bottom: '-13px', padding: '20px' }}>
                                     <i style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><CIcon icon={icon.cilTrash} /></i>
                                 </button>
                             </div>
@@ -191,21 +215,21 @@ const Outlet = () => {
                     <div className="field">
                         <label className="label">Name</label>
                         <div className="control">
-                            <input className="input" type="text" placeholder="" onChange={(e) => outlet.name = e.target.value}/>
+                            <input className="input" type="text" placeholder="" value={outlet.name} name="name" onChange={handleInputChange}/>
                         </div>
                         <p className="help">Masukkan nama outlet</p>
                     </div>
                     <div className="field">
                         <label className="label">Address</label>
                         <div className="control">
-                            <input className="input" type="text" placeholder="" onChange={(e) => outlet.address = e.target.value}/>
+                            <input className="input" type="text" placeholder="" value={outlet.address} name="address" onChange={handleInputChange}/>
                         </div>
                         <p className="help">Masukkan alamat outlet</p>
                     </div>
                     <div className="field">
                         <label className="label">Phone</label>
                         <div className="control">
-                            <input className="input" type="number" placeholder="" onChange={(e) => outlet.phone = e.target.value}/>
+                            <input className="input" type="number" placeholder="" value={outlet.phone} name="phone" onChange={handleInputChange}/>
                         </div>
                         <p className="help">Masukkan nomor hp pemilik outlet</p>
                     </div>

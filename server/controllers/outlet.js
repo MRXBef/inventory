@@ -83,13 +83,16 @@ export const deleteOutlet = async(req, res) => {
         if(!outlet) return res.status(403).json({msg: "Outlet not found"})
 
         await outlet.destroy()
-        return res.status(200).json({
-            msg: "Outlet successfully deleted",
-            data: {
-                "name" : outlet.name, 
-                "address" : outlet.address, 
-                "phone" : outlet.phone
-            }
+
+        const outlets = await Outlet.findAll({
+            attributes: ['id', 'name', 'address', 'phone'],
+            order: [
+                ['createdAt', 'DESC']
+            ]
+        })
+        res.status(200).json({
+            msg: `${outlet.name} successfully Deleted`,
+            data: outlets
         })
     } catch (error) {
         console.log(error.message)
