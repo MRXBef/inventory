@@ -56,6 +56,10 @@ export const updateOutlet = async(req, res) => {
     const {outletId, name, address, phone} = req.body
     if(!outletId) return res.status(400).json({msg: "Outlet id are required"})
     try {
+        const findDuplicateNameOutlet = await Outlet.findAll({
+            where: {name: name}
+        })
+        if(findDuplicateNameOutlet.length > 0) return res.status(409).json({msg: `Outlet for ${name} already exists`})
         const outlet = await Outlet.findOne({
             where: {id: outletId}
         })
@@ -65,7 +69,17 @@ export const updateOutlet = async(req, res) => {
             address: address || outlet.address,
             phone: phone || outlet.phone
         })
-        res.status(200).json({msg: "Update outlet successfully"})
+
+        const outlets = await Outlet.findAll({
+            attributes: ['id', 'name', 'address', 'phone'],
+            order: [
+                ['createdAt', 'DESC']
+            ]
+        })
+        res.status(200).json(
+            {msg: "Update outlet successfully",
+            data: outlets
+        })
     } catch (error) {
         console.log(error.message)
         res.status(500).json({msg: "Internal server error"})

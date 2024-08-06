@@ -15,7 +15,14 @@ const Outlet = () => {
         address: '',
         phone: ''
     })
-    const [hideFormAddProduct, setHideFormAddProduct] = useState('hideFormAddProduct')
+    const [updateOutlet, setUpdateOutlet] = useState({
+        id: null,
+        name: '',
+        address: '',
+        phone: ''
+    })
+    const [hideFormAddOutlet, setHideFormAddOutlet] = useState('hideFormAddProduct')
+    const [hideFormEditOutlet, setHideFormEditOutlet] = useState('hideFormAddProduct')
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -68,14 +75,33 @@ const Outlet = () => {
             if(response) {
                 setMsg({msg: response.data.msg, color: 'green'})
                 setOutlets(response.data.data)
-                setHideFormAddProduct('hideFormAddProduct')
+                setHideFormAddOutlet('hideFormAddProduct')
                 setCurrentPage(1)
                 setOutlet({name: '', address: '', phone: ''})
             }
         } catch (error) {
             setMsg({msg: error.response.data.msg, color: 'red'})
         }
+    }
 
+    const handleEditOutlet = async(e) => {
+        e.preventDefault()
+
+        try {
+            const response = await axios.put(`${import.meta.env.VITE_BASEURL}/outlet`, {
+                outletId : updateOutlet.id,
+                name: updateOutlet.name,
+                address: updateOutlet.address,
+                phone: updateOutlet.phone
+            })
+            if(response) {
+                setMsg({msg: response.data.msg, color: 'green'})
+                setOutlets(response.data.data)
+                setHideFormEditOutlet('hideFormAddProduct')
+            }
+        } catch (error) {
+            setMsg({msg: error.response.data.msg, color: 'red'})
+        }
     }
 
     const handleDeleteOutlet = async(outletId, outletName) => {
@@ -98,13 +124,35 @@ const Outlet = () => {
             [name]: value
         }))
     }
+    
+    const handleInputChangeEdit = (e) => {
+        const {name, value} = e.target
+        setUpdateOutlet((prevOutlet) => ({
+            ...prevOutlet,
+            [name]: value
+        }))
+    }
 
-    const handleShowFormAddProduct = () => {
-        setHideFormAddProduct('')
+    const handleShowFormAddOutlet = () => {
+        setHideFormAddOutlet('')
       }
     
-    const handleHideFormAddProduct = () => {
-        setHideFormAddProduct('hideFormAddProduct')
+    const handleHideFormAddOutlet = () => {
+        setHideFormAddOutlet('hideFormAddProduct')
+    }
+
+    const handleShowFormEditOutlet = (id, name, address, phone) => {
+        setHideFormEditOutlet('')
+        setUpdateOutlet({
+            id: id,
+            name: name,
+            address: address, 
+            phone: phone
+        })
+    }
+    
+    const handleHideFormEditOutlet = () => {
+        setHideFormEditOutlet('hideFormAddProduct')
     }
 
     const stopPropagation = (e) => {
@@ -161,7 +209,7 @@ const Outlet = () => {
             setCurrentPage(currentPage + 1);
         }
     };
-
+    
     return (
         <div className='is-flex'>
             <Sidebar />
@@ -185,13 +233,13 @@ const Outlet = () => {
                             <input onChange={(e) => setSearch(e.target.value)} type="text"  placeholder='Search'/>
                             <button style={{width: '50px'}} type='submit' className='button'><i><CIcon icon={icon.cilSearch}/></i></button>
                         </form>
-                        <button onClick={handleShowFormAddProduct} className="button">Add Outlet</button>
+                        <button onClick={handleShowFormAddOutlet} className="button">Add Outlet</button>
                     </div>
                 </div>
                 <div className="outletContent">
                     {currentOutlets.map((outlet, index) => (
                         <div key={index} className="outletBox">
-                            <i style={{ position: 'absolute', top: '15px', right: '15px', display: 'flex', justifyContent: 'center', cursor: 'pointer' }}><CIcon icon={icon.cilPen} /></i>
+                            <i onClick={(e) => handleShowFormEditOutlet (outlet.id, outlet.name, outlet.address, outlet.phone)} style={{ position: 'absolute', top: '15px', right: '15px', display: 'flex', justifyContent: 'center', cursor: 'pointer' }}><CIcon icon={icon.cilPen} /></i>
                             <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
                                 <img src={outletBackground} style={{height: '150px'}} />
                             </div>
@@ -224,7 +272,7 @@ const Outlet = () => {
                 </div>
 
                 {/* form add outlet */}
-                <div onClick={handleHideFormAddProduct} className={`formAddProduct ${hideFormAddProduct}`}>
+                <div onClick={handleHideFormAddOutlet} className={`formAddProduct ${hideFormAddOutlet}`}>
                 <form style={{height: 'auto'}} onSubmit={handleAddOutlet} onClick={stopPropagation} action="">
                     <div className="field">
                         <label className="label">Name</label>
@@ -244,6 +292,34 @@ const Outlet = () => {
                         <label className="label">Phone</label>
                         <div className="control">
                             <input className="input" type="number" placeholder="" value={outlet.phone} name="phone" onChange={handleInputChange}/>
+                        </div>
+                        <p className="help">Masukkan nomor hp pemilik outlet</p>
+                    </div>
+                    <button className='button is-success is-fullwidth'>Add Outlet</button>
+                </form>
+                </div>
+
+                {/* form edit outlet */}
+                <div onClick={handleHideFormEditOutlet} className={`formAddProduct ${hideFormEditOutlet}`}>
+                <form style={{height: 'auto'}} onSubmit={handleEditOutlet} onClick={stopPropagation} action="">
+                    <div className="field">
+                        <label className="label">Name</label>
+                        <div className="control">
+                            <input className="input" type="text" placeholder="" value={updateOutlet.name} name="name" onChange={handleInputChangeEdit}/>
+                        </div>
+                        <p className="help">Masukkan nama outlet</p>
+                    </div>
+                    <div className="field">
+                        <label className="label">Address</label>
+                        <div className="control">
+                            <input className="input" type="text" placeholder="" value={updateOutlet.address} name="address" onChange={handleInputChangeEdit}/>
+                        </div>
+                        <p className="help">Masukkan alamat outlet</p>
+                    </div>
+                    <div className="field">
+                        <label className="label">Phone</label>
+                        <div className="control">
+                            <input className="input" type="number" placeholder="" value={updateOutlet.phone} name="phone" onChange={handleInputChangeEdit}/>
                         </div>
                         <p className="help">Masukkan nomor hp pemilik outlet</p>
                     </div>
