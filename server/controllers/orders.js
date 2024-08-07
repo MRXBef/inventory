@@ -143,8 +143,8 @@ export const deleteRecordOrder = async(req, res) => {
 
 
 export const createFinalOrder = async(req, res) => {
-    const {turnCode, cash} = req.body
-    if(!cash) return res.status(400).json({msg: "Cash required"})
+    const {turnCode, cash, outlet} = req.body
+    if(!cash || !outlet) return res.status(400).json({msg: "Cash and Outlet required"})
     
 try {
     const recordsOrdered = await OrderRecordModel.findAll({
@@ -220,6 +220,7 @@ try {
         totalPayment: totalPayment,
         cash: cash,
         return: cashReturn,
+        outlet: outlet,
     })
     //membuat orderan (end)
 

@@ -13,9 +13,12 @@ const Cashier = () => {
     const [cash, setCash] = useState('')
     const [returns, setReturns] = useState('_____________')
     const [discount, setDiscount] = useState('_____________')
-    const [productList, setProductList] = useState([]) // State untuk daftar produk hasil pencarian
+    const [outlet, setOutlet] = useState('')
     const [formattedCash, setFormattedCash] = useState('');
-    const [showDropdown, setShowDropdown] = useState(false) // State untuk menampilkan dropdown
+    const [productList, setProductList] = useState([]) // S tate untuk daftar produk hasil pencarian
+    const [showDropdownProductCode, setShowDropdownProductCode] = useState(false) // State untuk menampilkan dropdown
+    const [outletList, setOutletList] = useState([]) // S tate untuk daftar produk hasil pencarian
+    const [showDropdownOutlet, setShowDropdownOutlet] = useState(false) // State untuk menampilkan dropdown
     const [isStoreClicked, setIsStoreClicked] = useState(false) // State untuk tombol Store
 
     useEffect(() => {
@@ -94,7 +97,8 @@ const Cashier = () => {
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASEURL}/orders`, {
                 turnCode: recordCode,
-                cash: cash
+                cash: cash,
+                outlet: outlet
             })
             const cashReturn = response.data.data.cashReturn
             const discount = response.data.data.sumDiscount
@@ -118,11 +122,11 @@ const Cashier = () => {
                 value: query
             })
             setProductList(response.data.data)
-            setShowDropdown(true)
+            setShowDropdownProductCode(true)
         } catch (error) {
             console.log(error.response)
             setProductList([])
-            setShowDropdown(false)
+            setShowDropdownProductCode(false)
         }
     }
 
@@ -132,13 +136,42 @@ const Cashier = () => {
         if(value.length > 1) {
             searchProducts(value)
         } else {
-            setShowDropdown(false)
+            setShowDropdownProductCode(false)
         }
     }
 
     const handleSelectProduct = (product) => {
         setProductCode(product.code)
-        setShowDropdown(false)
+        setShowDropdownProductCode(false)
+    }
+
+    const searchOutlet = async(query) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BASEURL}/outlet/search`, {
+                value: query
+            })
+            setOutletList(response.data.data)
+            setShowDropdownOutlet(true)
+        } catch (error) {
+            console.log(error.response)
+            setOutletList([])
+            setShowDropdownOutlet(false)
+        }
+    }
+
+    const handleOutletChange = (e) => {
+        const value = e.target.value
+        setOutlet(value)
+        if(value.length > 1) {
+            searchOutlet(value)
+        } else {
+            setShowDropdownOutlet(false)
+        }
+    }
+
+    const handleSelectOutlet = (outlet) => {
+        setOutlet(outlet.id)
+        setShowDropdownOutlet(false)
     }
 
     const handlePriceOnChange = async (e, id) => {
@@ -240,7 +273,21 @@ const Cashier = () => {
         width: '580px',
         maxHeight: '200px',
         overflow: 'scroll',
-        padding: '10px 0px 10px 0px'
+        padding: '10px 0px 10px 0px',
+        marginTop: '40px'
+    }
+
+    const dropdownStyleOutlet = {
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'absolute',
+        gap: '10px',
+        backgroundColor: 'black',
+        width: '580px',
+        maxHeight: '200px',
+        overflow: 'scroll',
+        padding: '10px 0px 10px 0px',
+        marginTop: '40px'
     }
 
     return (
@@ -265,25 +312,28 @@ const Cashier = () => {
                 </div>
                 <div className="formContainer">
                     <form onSubmit={record} className='is-flex codeForm'>
-                        <input 
-                            type="text" 
-                            className='input' 
-                            placeholder='Search with code or name of product' 
-                            value={productCode} 
-                            onChange={handleProductCodeChange}
-                        />
+                        <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+                            <input 
+                                type="text" 
+                                className='input' 
+                                placeholder='Search Item with code or name of product' 
+                                value={productCode} 
+                                onChange={handleProductCodeChange}
+                            />
+                            {showDropdownProductCode && (
+                                <ul className="dropdown" style={dropdownStyle}>
+                                    {productList.map((product) => (
+                                        <li style={{cursor: 'pointer', color: 'green'}} key={product.code} onClick={() => handleSelectProduct(product)}>
+                                            [{product.code}] <span style={{color: 'white'}}>{product.name.toUpperCase()} ~ ({rupiah(product.price)})</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
                         <input style={quantityStyle} type="number" className='input' placeholder='Quantity' value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
                         <button style={addButtonStyle} className='button is-success'>+</button>
                     </form>
-                    {showDropdown && (
-                        <ul className="dropdown" style={dropdownStyle}>
-                            {productList.map((product) => (
-                                <li style={{cursor: 'pointer', color: 'green'}} key={product.code} onClick={() => handleSelectProduct(product)}>
-                                    [{product.code}] <span style={{color: 'white'}}>{product.name.toUpperCase()} ~ ({rupiah(product.price)})</span>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    
                 </div>
                 <div className="orderView">
                     <table style={tableStyle} className="table">
@@ -343,6 +393,24 @@ const Cashier = () => {
                                 onChange={handleFormattedCashChange} 
                                 onBlur={handleCashOnChange} 
                             />
+                            <div style={{display: 'flex', flexDirection: 'column', width: '100%', marginLeft: '2px'}}>
+                                <input 
+                                    type="text" 
+                                    className='input' 
+                                    placeholder='Search Outlet' 
+                                    value={outlet}
+                                    onChange={handleOutletChange}
+                                />
+                                {showDropdownOutlet && (
+                                        <ul className="dropdown" style={dropdownStyleOutlet}>
+                                            {outletList.map((outlet) => (
+                                                <li style={{cursor: 'pointer', color: 'white'}} key={outlet.id} onClick={() => handleSelectOutlet(outlet)}>
+                                                    {outlet.name.toUpperCase()}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                            </div>
                             <button style={addButtonStyle} className='button is-success' disabled={isStoreClicked}>
                                 Create Order
                             </button>

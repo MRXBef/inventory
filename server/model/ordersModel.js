@@ -28,6 +28,10 @@ const Orders = db.define(
             type: DataTypes.INTEGER,
             allowNull: true
         },
+        outlet: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
     }
 )
 
