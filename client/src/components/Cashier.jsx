@@ -13,7 +13,7 @@ const Cashier = () => {
     const [cash, setCash] = useState('')
     const [returns, setReturns] = useState('_____________')
     const [discount, setDiscount] = useState('_____________')
-    const [outlet, setOutlet] = useState('')
+    const [outlet, setOutlet] = useState({id: null, name: ''})
     const [formattedCash, setFormattedCash] = useState('');
     const [productList, setProductList] = useState([]) // S tate untuk daftar produk hasil pencarian
     const [showDropdownProductCode, setShowDropdownProductCode] = useState(false) // State untuk menampilkan dropdown
@@ -76,15 +76,16 @@ const Cashier = () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_BASEURL}/record/turncode/${recordCode}`)
             setRecords(response.data.data)
+            if(response){
+                let price = []
+                const items =  response.data.data
+                items.forEach(item => {
+                    price.push(item.finalPrice)
+                })
+                const totalPrice = price.reduce((acc, val) => acc + val, 0)
+                setTotal(rupiah(totalPrice))
+            }
     
-            let price = []
-            const items =  response.data.data
-            items.forEach(e => {
-                price.push(e.finalPrice)
-            })
-            const totalPrice = price.reduce((acc, val) => acc + val, 0)
-
-            setTotal(rupiah(totalPrice))
         } catch (error) {
             console.log(error)
             setMsg({msg: error.response.data.msg, color: 'red'})
@@ -98,14 +99,14 @@ const Cashier = () => {
             const response = await axios.post(`${import.meta.env.VITE_BASEURL}/orders`, {
                 turnCode: recordCode,
                 cash: cash,
-                outlet: outlet
+                outlet: outlet.id
             })
-            const cashReturn = response.data.data.cashReturn
-            const discount = response.data.data.sumDiscount
-            setReturns(rupiah(cashReturn))
-            setDiscount(rupiah(discount))
-            setIsStoreClicked(true)
-            setMsg({msg: response.data.msg, color: 'green'})
+            if(response){
+                setReturns(rupiah(response.data.data.cashReturn))
+                setDiscount(rupiah(response.data.data.sumDiscount))
+                setIsStoreClicked(true)
+                setMsg({msg: response.data.msg, color: 'green'})
+            }
         } catch (error) {
             console.log(error.response)
             setMsg({msg: error.response.data.msg, color: 'red'})
@@ -121,8 +122,10 @@ const Cashier = () => {
             const response = await axios.post(`${import.meta.env.VITE_BASEURL}/items/search`, {
                 value: query
             })
-            setProductList(response.data.data)
-            setShowDropdownProductCode(true)
+            if(response) {
+                setProductList(response.data.data)
+                setShowDropdownProductCode(true)
+            }
         } catch (error) {
             console.log(error.response)
             setProductList([])
@@ -150,8 +153,10 @@ const Cashier = () => {
             const response = await axios.post(`${import.meta.env.VITE_BASEURL}/outlet/search`, {
                 value: query
             })
-            setOutletList(response.data.data)
-            setShowDropdownOutlet(true)
+            if(response){
+                setOutletList(response.data.data)
+                setShowDropdownOutlet(true)
+            }
         } catch (error) {
             console.log(error.response)
             setOutletList([])
@@ -161,7 +166,7 @@ const Cashier = () => {
 
     const handleOutletChange = (e) => {
         const value = e.target.value
-        setOutlet(value)
+        setOutlet({id: null, name: value})
         if(value.length > 1) {
             searchOutlet(value)
         } else {
@@ -170,7 +175,7 @@ const Cashier = () => {
     }
 
     const handleSelectOutlet = (outlet) => {
-        setOutlet(outlet.id)
+        setOutlet({id: outlet.id, name: outlet.name})
         setShowDropdownOutlet(false)
     }
 
@@ -398,7 +403,7 @@ const Cashier = () => {
                                     type="text" 
                                     className='input' 
                                     placeholder='Search Outlet' 
-                                    value={outlet}
+                                    value={outlet.name}
                                     onChange={handleOutletChange}
                                 />
                                 {showDropdownOutlet && (

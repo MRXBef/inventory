@@ -9,7 +9,7 @@ const Orders = db.define(
             allowNull: false
         },
         items: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(1000),
             allowNull: false
         },
         totalDiscount: {
