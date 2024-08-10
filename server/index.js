@@ -13,10 +13,7 @@ const app = express()
 try {
     await db.authenticate()
     console.log("Database connected")
-    // await db.sync(orderRecords)
-    // await db.sync(Items)
-    // await db.sync(Orders)
-    // await db.sync(Outlet)
+    await db.sync(orderRecords, Items, Orders, Outlet, {alter: true})
 } catch (error) {
     console.log(error)
 }

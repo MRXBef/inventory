@@ -106,11 +106,20 @@ const Cashier = () => {
                 setDiscount(rupiah(response.data.data.sumDiscount))
                 setIsStoreClicked(true)
                 setMsg({msg: response.data.msg, color: 'green'})
+
+                createRecipt(response.data.recipt)
             }
         } catch (error) {
             console.log(error.response)
             setMsg({msg: error.response.data.msg, color: 'red'})
         }
+    }
+
+    const createRecipt = (datas) => {
+        console.log(datas)
+        datas.forEach(data => {
+            console.log(`${data.itemName} : ${data.finalPrice}`)
+        })
     }
 
     const handleRefresh = () => {

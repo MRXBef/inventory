@@ -251,7 +251,8 @@ try {
 
     res.status(200).json({
         msg: "Order successfully created",
-        data: {cashReturn, sumDiscount}
+        data: {cashReturn, sumDiscount},
+        recipt: [...recordsOrdered]
     })
     } catch (error) {
         console.log(error)
