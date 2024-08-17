@@ -40,7 +40,7 @@ const Orders = () => {
                 {ordersData.map((data, index) => (
                     <div key={index} className='orders'>
                         <div className="infoOrders">
-                            <p style={{fontWeight: 'bold', color: 'darkorange'}}>{`${data[2].toUpperCase()} [${rupiah(data[3])}]`}</p>
+                            <p style={{fontWeight: 'bold', color: 'darkorange'}}>{`${data[2].toUpperCase()} ~ [${rupiah(data[3])}]`}</p>
                             <div style={{display: 'flex', gap: '5px'}}>
                                 <i style={{color: 'white'}}><CIcon icon={icon.cilClock}/></i>
                                 <p>{data[1]}</p>
