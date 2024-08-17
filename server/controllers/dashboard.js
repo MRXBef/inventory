@@ -225,7 +225,7 @@ export const getTodayOrdersData = async (req, res) => {
             }))
             const orderTime = `${order.createdAt.getHours()}:${order.createdAt.getMinutes()}`
             const outlet = await Outlet.findOne({ where: { id: order.outlet } })
-            return [itemList, orderTime, outlet.dataValues.name]
+            return [itemList, orderTime, outlet.dataValues.name, order.totalPayment]
         }))
         res.status(200).json(ordersData)
     } catch (error) {
