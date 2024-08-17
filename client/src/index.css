@@ -49,7 +49,7 @@ body{
   background-color: black;
   padding: 30px;
   border-radius: 10px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .my-menu h3 {
@@ -430,4 +430,69 @@ input[type="number"] {
 .messages p {
   text-align: center;
   color: white;
+}
+
+
+
+
+.orders-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.formOrders {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.formOrders form {
+  display: flex;
+  gap: 10px;
+}
+
+.viewOrders {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+
+.infoOrders {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background-color: black;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.itemOrders {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid black;
+  padding: 20px;
+  gap: 20px;
+}
+
+.itemOrder {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.itemOrder:hover {
+  background-color: lightgray;
+}
+
+.itemOrder p {
+  color: black;
 }

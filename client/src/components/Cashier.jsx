@@ -33,10 +33,10 @@ const Cashier = () => {
 
     const rupiah = (number) => {
         return new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
         }).format(number).replace('IDR', 'Rp').trim();
     };
 
@@ -52,7 +52,6 @@ const Cashier = () => {
 
     const record = async(e) => {
         e.preventDefault()
-
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASEURL}/record`, {
                 turnCode: recordCode,

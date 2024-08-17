@@ -3,6 +3,7 @@ import Dashboard from './components/Dashboard'
 import Cashier from './components/Cashier'
 import Inventory from './components/Inventory'
 import Outlet from './components/Outlet'
+import Orders from './components/Orders'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
        <Route path="/inventory" element={<Inventory/>}/>
        <Route path="/cashier" element={<Cashier/>}/>
        <Route path="/Outlet" element={<Outlet/>}/>
+       <Route path="/orders" element={<Orders/>}/>
      </Routes>
    </Router>
     </>

@@ -207,6 +207,9 @@ export const getTodayOrdersData = async (req, res) => {
     const TODAY_START = new Date(NOW.setHours(0, 0, 0, 0))
     try {
         const orders = await Orders.findAll({
+            order: [
+                ['createdAt', 'DESC']
+            ],
             where: {
                 createdAt: {
                     [Op.gt]: TODAY_START
@@ -223,7 +226,7 @@ export const getTodayOrdersData = async (req, res) => {
                     quantity
                 }
             }))
-            const orderTime = `${order.createdAt.getHours()}:${order.createdAt.getMinutes()}`
+            const orderTime = `${order.createdAt.getHours()}.${order.createdAt.getMinutes()}`
             const outlet = await Outlet.findOne({ where: { id: order.outlet } })
             return [itemList, orderTime, outlet.dataValues.name, order.totalPayment]
         }))

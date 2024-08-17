@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
+import { useNavigate } from 'react-router-dom';
 import '../index.css';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
@@ -30,6 +31,7 @@ const Dashboard = () => {
   const [chartData, setChartData] = useState([])
   const [bestSeller, setBestSeller] = useState('')
   const [todayBestSeler, setTodayBestSeller] = useState('')
+  const navigate = useNavigate()
 
   const getLast7Days = () => {
     const days = [];
@@ -231,12 +233,14 @@ const Dashboard = () => {
           </div>
           <div className="my-headMenu">
             <h1 style={judulStyle}>Incomes</h1>
-            <div style={incomeStyle} className="my-menu">
+            <div style={incomeStyle, {cursor: 'pointer', backgroundColor: 'darkorange'}} className="my-menu" onClick={function(){navigate('/orders')}}>
               <h3>Today Orders</h3>
+        
               <h1 style={incomeTextStyle}>{todayOrders}</h1>
             </div>
             <div style={incomeStyle} className="my-menu">
               <h3>Today Incomes</h3>
+        
               <h1 style={incomeTextStyle}>{todayIncomes}</h1>
             </div>
           </div>
