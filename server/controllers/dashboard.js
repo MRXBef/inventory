@@ -2,6 +2,7 @@ import Orders from '../model/ordersModel.js'
 import OrderRecordModel from '../model/orderRecordModel.js'
 import Items from '../model/ItemsModel.js'
 import {Op} from 'sequelize'
+import Outlet from '../model/outletModels.js'
 
 export const getTotalOfItemsStock = async(req, res) => {
     try {
@@ -178,25 +179,57 @@ export const getLast7DaysIncomes = async(req, res) => {
     
         // Fetch all orders from the last 6 days excluding today
         const orders = await Orders.findAll({
-          attributes: ['totalPayment', 'createdAt'],
-          where: {
+            attributes: ['totalPayment', 'createdAt'],
+            where: {
             createdAt: {
-              [Op.gt]: SIX_DAYS_AGO,
-              [Op.lt]: TODAY_START
+                [Op.gt]: SIX_DAYS_AGO,
+                [Op.lt]: TODAY_START
             }
-          }
+            }
         });
     
         // Iterate over each order and add the income to the corresponding day
         orders.forEach(order => {
-          const orderDate = new Date(order.createdAt);
-          const dayIndex = Math.floor((TODAY_START - orderDate) / (1000 * 60 * 60 * 24));
-          incomes[5 - dayIndex] += order.totalPayment;
+            const orderDate = new Date(order.createdAt)
+            const dayIndex = Math.floor((TODAY_START - orderDate) / (1000 * 60 * 60 * 24));
+            incomes[5 - dayIndex] += order.totalPayment;
         });
     
         res.status(200).json({ incomes });
-      } catch (error) {
+        } catch (error) {
         console.log(error);
         res.status(500).json({ msg: "Internal server error" });
-      }
+    }
+}
+
+export const getTodayOrdersData = async (req, res) => {
+    const NOW = new Date()
+    const TODAY_START = new Date(NOW.setHours(0, 0, 0, 0))
+    try {
+        const orders = await Orders.findAll({
+            where: {
+                createdAt: {
+                    [Op.gt]: TODAY_START
+                }
+            }
+        })
+        const ordersData = await Promise.all(orders.map(async (order) => {
+            const items = order.dataValues.items.split(',')
+            const itemList = await Promise.all(items.map(async (i) => {
+                const [code, quantity] = i.split(':')
+                const product = await Items.findOne({ where: { code } })
+                return {
+                    itemName: product.name,
+                    quantity
+                }
+            }))
+            const orderTime = `${order.createdAt.getHours()}:${order.createdAt.getMinutes()}`
+            const outlet = await Outlet.findOne({ where: { id: order.outlet } })
+            return [itemList, orderTime, outlet.dataValues.name]
+        }))
+        res.status(200).json(ordersData)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: "Internal server error", error })
+    }
 }

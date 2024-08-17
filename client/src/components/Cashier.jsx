@@ -107,6 +107,7 @@ const Cashier = () => {
                 setIsStoreClicked(true)
                 setMsg({msg: response.data.msg, color: 'green'})
 
+                //membuat recipt
                 createRecipt(response.data.recipt)
             }
         } catch (error) {
@@ -116,7 +117,6 @@ const Cashier = () => {
     }
 
     const createRecipt = (datas) => {
-        console.log(datas)
         datas.forEach(data => {
             console.log(`${data.itemName} : ${data.finalPrice}`)
         })

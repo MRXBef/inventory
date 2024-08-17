@@ -59,7 +59,6 @@ export const updateOutlet = async(req, res) => {
         const findDuplicateNameOutlet = await Outlet.findAll({
             where: {name: name}
         })
-        console.log(findDuplicateNameOutlet[0].dataValues)
         if(findDuplicateNameOutlet.length > 0 && findDuplicateNameOutlet[0].dataValues.name !== name) return res.status(409).json({msg: `Outlet for ${name} already exists`})
         const outlet = await Outlet.findOne({
             where: {id: outletId}

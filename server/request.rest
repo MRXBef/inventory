@@ -114,7 +114,7 @@ POST http://localhost:5000/outlet
 Content-Type: application/json
 
 {
-    "name" : "Kios Eva",
+    "name" : "Kios Eva 9",
     "address" : "Jl. Lekong No 01",
     "phone" : "087864589890"
 }
@@ -138,3 +138,7 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:5000/outlet/3
+
+###
+
+GET http://localhost:5000/dashboard/orders
