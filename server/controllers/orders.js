@@ -8,7 +8,7 @@ export const getTurnCode = async(req, res) => {
     const date = new Date()
 
     try {
-        const turnCode = `${date.getDate()}${date.getMonth()}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+        const turnCode = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
         res.status(200).json({turn_code: turnCode})
     } catch (error) {
         console.log(error)

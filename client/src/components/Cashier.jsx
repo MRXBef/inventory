@@ -144,19 +144,13 @@ const Cashier = () => {
         datas.forEach(data => {
             console.log(`${data.itemName} : ${data.finalPrice}`)
         })
-        console.log(datas)
+
         const config = qz.configs.create("Microsoft Print to PDF", {
-            size: { width: 100, height: 'auto' },
+            size: { width: 110, height: 'auto' },
             units: 'mm',
             orientation: 'portrait',
             margins: { top: 5, right: 5, bottom: 5, left: 5 },
         });
-
-        const items = [
-            {name: "sprite", qty: 3},
-            {name: "aqua", qty: 3},
-            {name: "cocacola", qty: 3},
-        ]
 
         const date = new Date().getDate()
         const month = new Date().getMonth() + 1
@@ -173,11 +167,14 @@ const Cashier = () => {
             <div style="font-family: Arial, sans-serif; font-size: 10px; width: 100%; display: flex; justify-content: center; flex-direction: column;">
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: center">
                     <img src=${abLogo} alt="Logo" style="max-width: 100px;"/>
-                    <div>
-                        <p style="text-align: center; font-size: 10px">${date}/${month}/${year}</p>
+                    <div style="width: 50px; height: 50px; border-radius: 50%; border: 1px dotted black; display: flex; align-items: center; padding: 10px">
                         <p style="text-align: center; font-size: 10px">${outlet.name.toUpperCase()}</p>
-                        <p style="text-align: center; font-size: 10px">${hours}:${minute}</p>
                     </div>
+                </div>
+                <div style="width: 100%; border-top: 1px dotted black; display: flex; gap: 5px; justify-content: center">
+                    <p style="text-align: center; font-size: 10px">Tgl: ${date}/${month}/${year}</p>                 
+                    <p style="text-align: center; font-size: 10px">~</p>                 
+                    <p style="text-align: center; font-size: 10px">Wkt: ${hours}:${minute}</p>
                 </div>
                 <div style="width: 100%; border-top: 1px dotted black; border-bottom: 1px dotted black">
                     <p style="text-align: center; font-size: 10px">Id Transaksi: ${recordCode}</p>
@@ -203,9 +200,16 @@ const Cashier = () => {
                     </tbody>
                 </table>
                 <div style="width: 100%; border-top: 1px dotted black; border-bottom: 1px dotted black">
-                    <p style="text-align: center; font-size: 10px">Total Keseluruhan: ${rupiah(totalKeseluruhan)}</p>
+                    <p style="text-align: center; font-size: 10px; font-weight: bold">Total Keseluruhan: <span>${rupiah(totalKeseluruhan)}</span></p>
                 </div>
-                <p style="text-align: center;">Terima Kasih telah berbelanja di toko kami!</p>
+                <div style="width: 100%; border-bottom: 1px dotted black">
+                    <p style="text-align: center;">NB: Barang yang expired/rusak bisa langsung di tukar</p>
+                    <p style="text-align: center;">Terima Kasih telah berbelanja di toko kami!</p>
+                </div>
+                <div style="width: 100%; border-bottom: 1px dotted black">
+                    <p style="text-align: center;">Jl. Gn Sasak No.29 Dasan Agung Mataram</p>
+                    <p style="text-align: center;">Hp/WA: +6281923726292</p>
+                </div>
             </div>
             `,
         }];
