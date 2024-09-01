@@ -145,8 +145,8 @@ const Cashier = () => {
             console.log(`${data.itemName} : ${data.finalPrice}`)
         })
 
-        const config = qz.configs.create("Microsoft Print to PDF", {
-            size: { width: 110, height: 'auto' },
+        const config = qz.configs.create("108Label Printer", {
+            size: { width: 110, height: null },
             units: 'mm',
             orientation: 'portrait',
             margins: { top: 5, right: 5, bottom: 5, left: 5 },
