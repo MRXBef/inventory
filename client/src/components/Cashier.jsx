@@ -22,6 +22,10 @@ const Cashier = () => {
     const [showDropdownOutlet, setShowDropdownOutlet] = useState(false) // State untuk menampilkan dropdown
     const [isStoreClicked, setIsStoreClicked] = useState(false) // State untuk tombol Store
 
+    //jika menggunakan cash tanpa input manual (otomatis)
+    //akan mengeset cash di store orders dengan nilai "cashTanpaInput"
+    const [cashTanpaInput, setCashTanpaInput] = useState(0)
+
     useEffect(() => {
         getTurnCode()
     }, [])
@@ -34,6 +38,7 @@ const Cashier = () => {
 
     useEffect(() => {
     //mengecek printer
+
     // qz.websocket.connect().then(() => {
     //   return qz.printers.find();
     // }).then(printers => {
@@ -107,6 +112,7 @@ const Cashier = () => {
                     price.push(item.finalPrice)
                 })
                 const totalPrice = price.reduce((acc, val) => acc + val, 0)
+                setCashTanpaInput(totalPrice)
                 setTotal(rupiah(totalPrice))
             }
     
@@ -122,7 +128,7 @@ const Cashier = () => {
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASEURL}/orders`, {
                 turnCode: recordCode,
-                cash: cash,
+                cash: cashTanpaInput,
                 outlet: outlet.id
             })
             if(response){
@@ -141,15 +147,15 @@ const Cashier = () => {
     }
 
     const createRecipt = (datas) => {
-        datas.forEach(data => {
-            console.log(`${data.itemName} : ${data.finalPrice}`)
-        })
+        // datas.forEach(data => {
+        //     console.log(`${data.itemName} : ${data.finalPrice}`)
+        // })
 
         const config = qz.configs.create("108Label Printer", {
-            size: { width: 110, height: null },
+            size: { width: 100, height: 150 },
             units: 'mm',
             orientation: 'portrait',
-            margins: { top: 5, right: 5, bottom: 5, left: 5 },
+            margins: { top: 0, right: 0, bottom: 0, left: 0 },
         });
 
         const date = new Date().getDate()
@@ -171,12 +177,11 @@ const Cashier = () => {
                         <p style="text-align: center; font-size: 10px">${outlet.name.toUpperCase()}</p>
                     </div>
                 </div>
-                <div style="width: 100%; border-top: 1px dotted black; display: flex; gap: 5px; justify-content: center">
+                <div style="width: 100%; border-top: 1px dotted black; border-bottom: 1px dotted black; display: flex; gap: 5px; justify-content: center">
                     <p style="text-align: center; font-size: 10px">Tgl: ${date}/${month}/${year}</p>                 
                     <p style="text-align: center; font-size: 10px">~</p>                 
                     <p style="text-align: center; font-size: 10px">Wkt: ${hours}:${minute}</p>
-                </div>
-                <div style="width: 100%; border-top: 1px dotted black; border-bottom: 1px dotted black">
+                    <p style="text-align: center; font-size: 10px">|</p>
                     <p style="text-align: center; font-size: 10px">Id Transaksi: ${recordCode}</p>
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
@@ -204,17 +209,24 @@ const Cashier = () => {
                 </div>
                 <div style="width: 100%; border-bottom: 1px dotted black">
                     <p style="text-align: center;">NB: Barang yang expired/rusak bisa langsung di tukar</p>
+                    <p style="text-align: center;">Jl. Gn Sasak No.29 Dasan Agung Mataram | Hp/WA: +6281923726292</p>
                     <p style="text-align: center;">Terima Kasih telah berbelanja di toko kami!</p>
-                </div>
-                <div style="width: 100%; border-bottom: 1px dotted black">
-                    <p style="text-align: center;">Jl. Gn Sasak No.29 Dasan Agung Mataram</p>
-                    <p style="text-align: center;">Hp/WA: +6281923726292</p>
                 </div>
             </div>
             `,
         }];
+        
+        qz.print(config, data)
+        .then((result) => {
+            console.log("Print 1 successful:", result);
 
-        qz.print(config, data).catch(err => console.error(err));
+            // Cetakan kedua setelah cetakan pertama berhasil
+            // return qz.print(config, data);
+        })
+        .then((result) => {
+            // console.log("Print 2 successful:", result);
+        })
+        .catch(err => console.error("Print failed:", err));
     }
 
     const handleRefresh = () => {
@@ -493,7 +505,8 @@ const Cashier = () => {
                     <h1 style={totalBayar}>Total: {total}</h1>
                     <form onSubmit={storeOrders} className='is-flex codeForm mt-5'>
                             <input style={quantityStyle} type="hidden" value={recordCode} className='input'/>
-                            <input 
+                            {/* jika menggunakan cash aktifkan input dibawah */}
+                            {/* <input 
                                 style={quantityStyle} 
                                 type="text" 
                                 className='input' 
@@ -501,7 +514,7 @@ const Cashier = () => {
                                 value={formattedCash || cash} 
                                 onChange={handleFormattedCashChange} 
                                 onBlur={handleCashOnChange} 
-                            />
+                            /> */}
                             <div style={{display: 'flex', flexDirection: 'column', width: '100%', marginLeft: '2px'}}>
                                 <input 
                                     type="text" 
